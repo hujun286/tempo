@@ -5,7 +5,8 @@ set -euo pipefail
 cd /home/z/my-project
 [ -f .gitee_推送凭据 ] || { echo "缺少 .gitee_推送凭据（格式 user:pass）"; exit 1; }
 CRED=$(tr -d '\n' < .gitee_推送凭据)
+PASS="${CRED##*:}"   # 凭据文件格式 user:pass，Gitee 接口用 oauth2:pass 形式（用户名固定 oauth2）
 git add -A
 git commit -q -m "定时/手动推送快照 $(date '+%F %T')" 2>/dev/null || true
-git push "https://${CRED}@gitee.com/zz237/zhipu.git" main:main
+git push "https://oauth2:${PASS}@gitee.com/zz237/zhipu.git" main:main
 echo "推送完成"
