@@ -14,3 +14,19 @@
 bash tools_工具箱/一键安装Rust工具链.sh
 cp tools_工具箱/cargo国内镜像配置.toml ~/.cargo/config.toml
 ```
+
+## bin/ 二进制清单
+
+_更新时间（北京时间）：2026-11-27 21:51_。来源：cargo-binstall 不可用（rsproxy 安装脚本 404、GitHub 直连 443 超时），sccache / cargo-deny / cargo-audit 经 ghfast.top 镜像直拉 GitHub 官方 release 预编译 musl 二进制（免编译），rust-script 走 rsproxy 源码编译（1m24s）。
+
+| 二进制 | 版本 | 用途 | 安装方式 |
+|---|---|---|---|
+| `cargo-audit` | cargo-audit 0.23.0 | RustSec 依赖漏洞审计：`cargo audit --db <本地advisory-db> --stale` | 镜像直拉 release |
+| `sccache` | sccache 0.20.1 | Rust 编译缓存，加速重复构建（`RUSTC_WRAPPER=sccache`） | 镜像直拉 release |
+| `rust-script` | rust-script 0.36.0 | 单文件 .rs 脚本直接运行 | cargo install（rsproxy 编译 84s） |
+| `cargo-deny` | cargo-deny 0.22.1 | 依赖 license/漏洞/来源合规检查 | 镜像直拉 release |
+
+备注：
+- cargo-binstall 本体未装成（rsproxy 的 binstall 安装脚本 404），它只是安装器，上述四工具均已就位，不影响使用。
+- bin/ 下二进制为官方 musl 静态编译，无 glibc 依赖问题；沙盒回收后从本目录直接取用，免重新下载/编译。
+- 上次审计基线（2026-11-27）：md_probe_16ip 0 告警；行情数据采集 1 条 unmaintained 告警（chrono 0.4.45，RUSTSEC-2026-0543）。
