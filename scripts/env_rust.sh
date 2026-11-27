@@ -5,6 +5,13 @@ export LANG=C.UTF-8   # 中文兜底，防乱码
 export RUSTUP_HOME=/home/z/my-project/rustup_home
 export CARGO_HOME=/home/z/my-project/cargo_home
 export PATH="$CARGO_HOME/bin:$PATH"
+# 回收兜底（20261128 凌晨实证）：cargo_home（rustup 垫片+registry 缓存）会丢而 rustup_home（工具链本体）偶有幸存；
+# 垫片丢失时直接把工具链本體 bin 加入 PATH，免重装 rustup（2 分钟→0 分钟）
+if [ ! -x "$CARGO_HOME/bin/cargo" ] && [ -x "$RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo" ]; then
+  export PATH="$RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
+  # 无垫片时 cargo 直接定位工具链，禁用 rustup 自动安装逻辑
+  export RUSTUP_TOOLCHAIN=stable-x86_64-unknown-linux-gnu
+fi
 # rsproxy 镜像（沙盒直连 static.rust-lang.org 只有 ~6KB/s，rsproxy ~9.4MB/s，实测 2026-11-25）
 export RUSTUP_DIST_SERVER=https://rsproxy.cn
 export RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup
