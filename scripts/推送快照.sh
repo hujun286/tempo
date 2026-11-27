@@ -16,5 +16,11 @@ fi
 [ -n "$PASS" ] || { echo "缺少 .gitee_推送凭据 且 origin remote 不带凭据"; exit 1; }
 git add -A
 git commit -q -m "定时/手动推送快照 $(date '+%F %T')" 2>/dev/null || true
-git push "https://oauth2:${PASS}@gitee.com/zz237/zhipu.git" main:main
-echo "推送完成"
+if git push "https://oauth2:${PASS}@gitee.com/zz237/zhipu.git" main:main 2>/dev/null; then
+  echo "推送完成(gitee)"
+else
+  # 兜底：Gitee 拒收(容量锁/等GC)时转推 GitHub tempo 备用分支，本地不丢
+  echo "gitee 拒收，转推 tempo/zhipu_main 备用"
+  git push tempo main:zhipu_main
+  echo "推送完成(tempo备用)"
+fi
