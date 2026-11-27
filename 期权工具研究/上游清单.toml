@@ -42,3 +42,25 @@ commit = "9770b27"
 date = "2026-08-20"
 用途 = "事件驱动骨架参考；InstrumentKind::Option(OptionContract) 字段齐全可映射中国合约"
 check结果 = "cargo check 通过；期权合约字段已确认存在"
+
+# 以下三个克隆不入 git（gitlink 出库改文字台账，SHA 提取自 2026-11-28 00:2x 定版树）
+[[repo]]
+name = "advisory-db_fork"
+url = "https://gitee.com/zz237/advisory-db_fork.git"
+commit = "c9f6c91"
+date = "2026-11-26"
+用途 = "RustSec advisory-db 国内镜像（cargo audit --db 用）；匿名可克隆，12MB"
+
+[[repo]]
+name = "tempo上游"
+url = "https://github.com/hujun286/tempo"
+commit = "1d6e57c"
+date = "2026-11-27"
+用途 = "GitHub 备用仓（20261125 全天13列分钟K 858万行 + v1_4落盘源码）；公开仓匿名可克隆"
+
+[[repo]]
+name = "ibx_fork"
+url = "https://gitee.com/zz237_admin/ibx_fork.git"
+commit = "1693d1a"
+date = "2026-11-27"
+用途 = "免 ibgateway 的 IBKR Rust 通道参考（AGPL+逆向风险，只研究不依赖）"
