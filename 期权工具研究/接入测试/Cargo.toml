@@ -1,0 +1,39 @@
+# 期权工具安装集成实测（Task 4-a）
+# 单 bin 设计：①②⑤默认构建；③④由 feature=chain 门控（optionstratlib/volsurf 重依赖隔离）；
+# ⑦⑧由 feature=checks 门控；stochastic-rs 仅 check（alt_check）。
+[package]
+name = "qiquan_jieru_ceshi"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "hexin_yanshi"
+path = "src/main.rs"
+
+[features]
+default = []
+chain = ["dep:optionstratlib", "dep:volsurf"]
+checks = ["dep:barter-instrument", "dep:option-chain-orderbook"]
+alt_check = ["dep:stochastic-rs"]
+
+[dependencies]
+serde_json = "1"
+# ① Black/Bachelier IV 反解（Jäckel 风格，近零依赖）
+implied-vol = "2.1.0"
+# ② BS 定价+Greeks（极轻）
+black_scholes = "0.11.1"
+# ⑤ GBM 蒙特卡洛（RustQuant 门面 0.3.1 会拉 14 个子 crate，故直接引子 crate，实测可用）
+RustQuant_stochastics = "0.3.1"
+# ⑧ 需要的配套类型（barter-instrument 的 Decimal / DateTime）
+rust_decimal = "1"
+chrono = "0.4"
+# ③ 全功能期权库（feature 裁剪：关掉 visualization(plotly)/simulation/backtest/schema/async）
+optionstratlib = { version = "0.24.6", default-features = false, features = ["clock", "pricing", "market", "analytics", "io"], optional = true }
+# ④ 波动率曲面 SVI/SABR/SSVI
+volsurf = { version = "4.0.1", optional = true }
+# ⑧ barter 门面很重（barter-data/execution/integration），InstrumentKind 实际在子 crate barter-instrument
+barter-instrument = { version = "0.3.3", optional = true }
+# ⑦ 实测 crates.io 在售 0.15.0（无需克隆）
+option-chain-orderbook = { version = "0.15.0", optional = true }
+# ⑤备选：只 cargo check 不演示
+stochastic-rs = { version = "2.6.2", optional = true }
