@@ -1,0 +1,50 @@
+# 可再生构建产物不入库（源码与配置全留）
+target/
+ctp测试/md_probe_16ip/target/
+ctp-workspace/ctp_live_实盘接入工程/target/
+# 会话流文件（CTP 重建，非工作产物）
+**/flow_会话流文件/
+**/md_flow/
+# rustup/cargo 工具链本体（rustup 可随时重装，不入库）
+.rustup/
+.cargo/
+config/secrets*.toml
+
+# 实机凭据文件不入git（只随快照包走L4异地容灾）
+**/config/secrets.toml
+
+# gitee 推送凭据(本地0600,仅定时任务推送用,永不入库)
+.gitee_推送凭据
+
+# tmpo.git 对照克隆（内容=实机版基线，不入库；防递归提交）
+tmpo/
+
+# ——20261127 仓库整理:环境与输入件不入库——
+upload/
+.env
+advisory-db
+tmpo/
+
+# ——20261127 空间治理:大件分流（zhipu=代码+文档+小件; zhipu2=刚需二进制+容灾快照）——
+# venv 本体（pyarrow 等 Python so 约 135MB；Rust 方针用 arrow-rs，本地保留不上传）
+tools_工具箱/环境自举_libclangvenv/
+# z-ai 环境自带模板（与 CTP 项目无关，本地保留）
+skills/
+# 本地历史备份（.git 历史自身已有）
+backup/
+# 历史快照包 → 归 zhipu2 容灾仓
+download/快照_*.tar.gz
+download/工作包_*.tar.gz
+download/*.tar.gz
+# RustSec advisory-db 公开数据（cargo-deny 自动 fetch 可恢复；1587 文件不入库）
+ctp-workspace/advisory-db/
+# 历史快照与实机基线（本地归档；实机代码以 gitee.com/zz237/tmpo.git 为权威源）
+archive_归档/快照包/
+archive_归档/tmpo对照_实机版基线/
+# CTP so 已由主工程 lib/ 跟踪一份，探针副本不入库
+ctp测试/md_probe_16ip/lib/
+# zhipu2 容灾仓工作目录（独立 git 仓库，防嵌套递归提交）
+zhipu2_容灾仓/
+# 运行期临时
+tool-results/
+*.log.bak

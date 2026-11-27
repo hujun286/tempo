@@ -1,0 +1,220 @@
+2026-11-26T17:33:52.345350Z  INFO market_data_collector::config: [CFG] 已加载运行配置 /home/z/my-project/ctp-workspace/行情数据采集/配置_分钟K线.toml
+2026-11-26T17:33:52.346071Z  INFO market_data_collector: [CFG] 已加载 ./config/secrets.toml
+2026-11-26T17:33:52.367635Z  INFO market_data_collector: [CFG] 工作区根 . | 合约 29433 条 | member 16 个 | md_port 61213 | 断线重连 开 | 分片fsync 60秒
+2026-11-26T17:33:52.373108Z  INFO market_data_collector::contracts: [SHARD] 交易所 CFFEX: 800 条
+2026-11-26T17:33:52.373661Z  INFO market_data_collector::contracts: [SHARD] 交易所 CZCE: 6745 条
+2026-11-26T17:33:52.374629Z  INFO market_data_collector::contracts: [SHARD] 交易所 DCE: 9894 条
+2026-11-26T17:33:52.375018Z  INFO market_data_collector::contracts: [SHARD] 交易所 GFEX: 4185 条
+2026-11-26T17:33:52.375118Z  INFO market_data_collector::contracts: [SHARD] 交易所 INE: 911 条
+2026-11-26T17:33:52.375664Z  INFO market_data_collector::contracts: [SHARD] 交易所 SHFE: 6898 条
+2026-11-26T17:33:52.375719Z  INFO market_data_collector: [CFG] 分片输出目录 ./实测输出_凌晨（每根bar收盘即追加，每60秒fsync）
+2026-11-26T17:33:52.457245Z  INFO market_data_collector::session: [MD#0] 启动 front=tcp://101.231.185.57:61213 合约数=1842（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.460081Z  INFO market_data_collector::session: [MD#2] 启动 front=tcp://101.231.185.59:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.460322Z  INFO market_data_collector::session: [MD#3] 启动 front=tcp://101.231.185.60:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.460532Z  INFO market_data_collector::session: [MD#1] 启动 front=tcp://101.231.185.58:61213 合约数=1842（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.460773Z  INFO market_data_collector::session: [MD#4] 启动 front=tcp://180.166.83.72:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.461227Z  INFO market_data_collector::session: [MD#5] 启动 front=tcp://180.166.83.73:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.461905Z  INFO market_data_collector::session: [MD#6] 启动 front=tcp://180.166.83.74:61213 合约数=1840（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.462586Z  INFO market_data_collector::session: [MD#7] 启动 front=tcp://180.166.83.75:61213 合约数=1840（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.463299Z  INFO market_data_collector::session: [MD#8] 启动 front=tcp://140.206.102.76:61213 合约数=1840（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.464003Z  INFO market_data_collector::session: [MD#9] 启动 front=tcp://140.206.102.77:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.464702Z  INFO market_data_collector::session: [MD#10] 启动 front=tcp://140.206.102.78:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.465375Z  INFO market_data_collector::session: [MD#11] 启动 front=tcp://112.65.132.105:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.466110Z  INFO market_data_collector::session: [MD#12] 启动 front=tcp://112.65.132.21:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.466806Z  INFO market_data_collector::session: [MD#13] 启动 front=tcp://112.65.132.22:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.467542Z  INFO market_data_collector::session: [MD#14] 启动 front=tcp://112.65.132.23:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.468255Z  INFO market_data_collector::session: [MD#15] 启动 front=tcp://112.65.132.25:61213 合约数=1837（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:33:52.468252Z  INFO market_data_collector: [RUN] 16 个 member 已启动，进入健康巡检（非交易时段空转属正常；Ctrl+C 优雅退出，数据每60秒落盘一次）
+2026-11-26T17:33:52.538514Z ERROR market_data_collector::session: [MD#1] 前置已连接
+2026-11-26T17:33:52.538611Z  INFO market_data_collector::session: [MD#1] req_user_login ret=0
+2026-11-26T17:33:52.538957Z ERROR market_data_collector::session: [MD#2] 前置已连接
+2026-11-26T17:33:52.539042Z  INFO market_data_collector::session: [MD#2] req_user_login ret=0
+2026-11-26T17:33:52.547326Z ERROR market_data_collector::session: [MD#0] 前置已连接
+2026-11-26T17:33:52.547374Z  INFO market_data_collector::session: [MD#0] req_user_login ret=0
+2026-11-26T17:33:52.548829Z ERROR market_data_collector::session: [MD#5] 前置已连接
+2026-11-26T17:33:52.548855Z  INFO market_data_collector::session: [MD#5] req_user_login ret=0
+2026-11-26T17:33:52.551025Z ERROR market_data_collector::session: [MD#3] 前置已连接
+2026-11-26T17:33:52.551066Z  INFO market_data_collector::session: [MD#3] req_user_login ret=0
+2026-11-26T17:33:52.551087Z ERROR market_data_collector::session: [MD#4] 前置已连接
+2026-11-26T17:33:52.551106Z  INFO market_data_collector::session: [MD#4] req_user_login ret=0
+2026-11-26T17:33:52.554443Z ERROR market_data_collector::session: [MD#9] 前置已连接
+2026-11-26T17:33:52.554532Z  INFO market_data_collector::session: [MD#9] req_user_login ret=0
+2026-11-26T17:33:52.554654Z ERROR market_data_collector::session: [MD#6] 前置已连接
+2026-11-26T17:33:52.554682Z  INFO market_data_collector::session: [MD#6] req_user_login ret=0
+2026-11-26T17:33:52.555004Z ERROR market_data_collector::session: [MD#13] 前置已连接
+2026-11-26T17:33:52.554999Z ERROR market_data_collector::session: [MD#7] 前置已连接
+2026-11-26T17:33:52.555024Z  INFO market_data_collector::session: [MD#13] req_user_login ret=0
+2026-11-26T17:33:52.555036Z  INFO market_data_collector::session: [MD#7] req_user_login ret=0
+2026-11-26T17:33:52.561735Z ERROR market_data_collector::session: [MD#10] 前置已连接
+2026-11-26T17:33:52.561775Z  INFO market_data_collector::session: [MD#10] req_user_login ret=0
+2026-11-26T17:33:52.562881Z ERROR market_data_collector::session: [MD#15] 前置已连接
+2026-11-26T17:33:52.562940Z  INFO market_data_collector::session: [MD#15] req_user_login ret=0
+2026-11-26T17:33:52.563030Z ERROR market_data_collector::session: [MD#14] 前置已连接
+2026-11-26T17:33:52.563052Z  INFO market_data_collector::session: [MD#14] req_user_login ret=0
+2026-11-26T17:33:52.603453Z ERROR market_data_collector::session: [MD#12] 前置已连接
+2026-11-26T17:33:52.603538Z  INFO market_data_collector::session: [MD#12] req_user_login ret=0
+2026-11-26T17:33:52.603561Z ERROR market_data_collector::session: [MD#11] 前置已连接
+2026-11-26T17:33:52.603620Z  INFO market_data_collector::session: [MD#11] req_user_login ret=0
+2026-11-26T17:33:52.603667Z ERROR market_data_collector::session: [MD#8] 前置已连接
+2026-11-26T17:33:52.603684Z  INFO market_data_collector::session: [MD#8] req_user_login ret=0
+2026-11-26T17:33:54.038999Z  INFO market_data_collector::session: [MD#1] 订阅 500/1842 ret=0
+2026-11-26T17:33:54.039397Z  INFO market_data_collector::session: [MD#2] 订阅 500/1841 ret=0
+2026-11-26T17:33:54.047678Z  INFO market_data_collector::session: [MD#0] 订阅 500/1842 ret=0
+2026-11-26T17:33:54.049119Z  INFO market_data_collector::session: [MD#5] 订阅 500/1841 ret=0
+2026-11-26T17:33:54.051296Z  INFO market_data_collector::session: [MD#3] 订阅 500/1841 ret=0
+2026-11-26T17:33:54.051354Z  INFO market_data_collector::session: [MD#4] 订阅 500/1841 ret=0
+2026-11-26T17:33:54.054858Z  INFO market_data_collector::session: [MD#9] 订阅 500/1838 ret=0
+2026-11-26T17:33:54.055104Z  INFO market_data_collector::session: [MD#6] 订阅 500/1840 ret=0
+2026-11-26T17:33:54.055320Z  INFO market_data_collector::session: [MD#13] 订阅 500/1838 ret=0
+2026-11-26T17:33:54.055512Z  INFO market_data_collector::session: [MD#7] 订阅 500/1840 ret=0
+2026-11-26T17:33:54.062026Z  INFO market_data_collector::session: [MD#10] 订阅 500/1838 ret=0
+2026-11-26T17:33:54.063372Z  INFO market_data_collector::session: [MD#14] 订阅 500/1838 ret=0
+2026-11-26T17:33:54.063522Z  INFO market_data_collector::session: [MD#15] 订阅 500/1837 ret=0
+2026-11-26T17:33:54.103810Z  INFO market_data_collector::session: [MD#12] 订阅 500/1838 ret=0
+2026-11-26T17:33:54.103929Z  INFO market_data_collector::session: [MD#11] 订阅 500/1838 ret=0
+2026-11-26T17:33:54.104141Z  INFO market_data_collector::session: [MD#8] 订阅 500/1840 ret=0
+2026-11-26T17:33:54.339408Z  INFO market_data_collector::session: [MD#1] 订阅 1000/1842 ret=0
+2026-11-26T17:33:54.339816Z  INFO market_data_collector::session: [MD#2] 订阅 1000/1841 ret=0
+2026-11-26T17:33:54.347935Z  INFO market_data_collector::session: [MD#0] 订阅 1000/1842 ret=0
+2026-11-26T17:33:54.349379Z  INFO market_data_collector::session: [MD#5] 订阅 1000/1841 ret=0
+2026-11-26T17:33:54.351575Z  INFO market_data_collector::session: [MD#3] 订阅 1000/1841 ret=0
+2026-11-26T17:33:54.351697Z  INFO market_data_collector::session: [MD#4] 订阅 1000/1841 ret=0
+2026-11-26T17:33:54.355112Z  INFO market_data_collector::session: [MD#9] 订阅 1000/1838 ret=0
+2026-11-26T17:33:54.355351Z  INFO market_data_collector::session: [MD#6] 订阅 1000/1840 ret=0
+2026-11-26T17:33:54.355566Z  INFO market_data_collector::session: [MD#13] 订阅 1000/1838 ret=0
+2026-11-26T17:33:54.355806Z  INFO market_data_collector::session: [MD#7] 订阅 1000/1840 ret=0
+2026-11-26T17:33:54.362291Z  INFO market_data_collector::session: [MD#10] 订阅 1000/1838 ret=0
+2026-11-26T17:33:54.363761Z  INFO market_data_collector::session: [MD#15] 订阅 1000/1837 ret=0
+2026-11-26T17:33:54.363855Z  INFO market_data_collector::session: [MD#14] 订阅 1000/1838 ret=0
+2026-11-26T17:33:54.404110Z  INFO market_data_collector::session: [MD#12] 订阅 1000/1838 ret=0
+2026-11-26T17:33:54.404344Z  INFO market_data_collector::session: [MD#11] 订阅 1000/1838 ret=0
+2026-11-26T17:33:54.404440Z  INFO market_data_collector::session: [MD#8] 订阅 1000/1840 ret=0
+2026-11-26T17:33:54.639820Z  INFO market_data_collector::session: [MD#1] 订阅 1500/1842 ret=0
+2026-11-26T17:33:54.640192Z  INFO market_data_collector::session: [MD#2] 订阅 1500/1841 ret=0
+2026-11-26T17:33:54.648221Z  INFO market_data_collector::session: [MD#0] 订阅 1500/1842 ret=0
+2026-11-26T17:33:54.649712Z  INFO market_data_collector::session: [MD#5] 订阅 1500/1841 ret=0
+2026-11-26T17:33:54.651857Z  INFO market_data_collector::session: [MD#3] 订阅 1500/1841 ret=0
+2026-11-26T17:33:54.652074Z  INFO market_data_collector::session: [MD#4] 订阅 1500/1841 ret=0
+2026-11-26T17:33:54.655446Z  INFO market_data_collector::session: [MD#9] 订阅 1500/1838 ret=0
+2026-11-26T17:33:54.655666Z  INFO market_data_collector::session: [MD#6] 订阅 1500/1840 ret=0
+2026-11-26T17:33:54.655770Z  INFO market_data_collector::session: [MD#13] 订阅 1500/1838 ret=0
+2026-11-26T17:33:54.656074Z  INFO market_data_collector::session: [MD#7] 订阅 1500/1840 ret=0
+2026-11-26T17:33:54.662617Z  INFO market_data_collector::session: [MD#10] 订阅 1500/1838 ret=0
+2026-11-26T17:33:54.664042Z  INFO market_data_collector::session: [MD#15] 订阅 1500/1837 ret=0
+2026-11-26T17:33:54.664352Z  INFO market_data_collector::session: [MD#14] 订阅 1500/1838 ret=0
+2026-11-26T17:33:54.704417Z  INFO market_data_collector::session: [MD#12] 订阅 1500/1838 ret=0
+2026-11-26T17:33:54.704628Z  INFO market_data_collector::session: [MD#11] 订阅 1500/1838 ret=0
+2026-11-26T17:33:54.704805Z  INFO market_data_collector::session: [MD#8] 订阅 1500/1840 ret=0
+2026-11-26T17:33:54.940116Z  INFO market_data_collector::session: [MD#1] 订阅 1842/1842 ret=0
+2026-11-26T17:33:54.940504Z  INFO market_data_collector::session: [MD#2] 订阅 1841/1841 ret=0
+2026-11-26T17:33:54.948490Z  INFO market_data_collector::session: [MD#0] 订阅 1842/1842 ret=0
+2026-11-26T17:33:54.949945Z  INFO market_data_collector::session: [MD#5] 订阅 1841/1841 ret=0
+2026-11-26T17:33:54.952055Z  INFO market_data_collector::session: [MD#3] 订阅 1841/1841 ret=0
+2026-11-26T17:33:54.952348Z  INFO market_data_collector::session: [MD#4] 订阅 1841/1841 ret=0
+2026-11-26T17:33:54.955660Z  INFO market_data_collector::session: [MD#9] 订阅 1838/1838 ret=0
+2026-11-26T17:33:54.955916Z  INFO market_data_collector::session: [MD#6] 订阅 1840/1840 ret=0
+2026-11-26T17:33:54.956057Z  INFO market_data_collector::session: [MD#13] 订阅 1838/1838 ret=0
+2026-11-26T17:33:54.956304Z  INFO market_data_collector::session: [MD#7] 订阅 1840/1840 ret=0
+2026-11-26T17:33:54.962842Z  INFO market_data_collector::session: [MD#10] 订阅 1838/1838 ret=0
+2026-11-26T17:33:54.964234Z  INFO market_data_collector::session: [MD#15] 订阅 1837/1837 ret=0
+2026-11-26T17:33:54.964588Z  INFO market_data_collector::session: [MD#14] 订阅 1838/1838 ret=0
+2026-11-26T17:33:55.004630Z  INFO market_data_collector::session: [MD#12] 订阅 1838/1838 ret=0
+2026-11-26T17:33:55.004879Z  INFO market_data_collector::session: [MD#11] 订阅 1838/1838 ret=0
+2026-11-26T17:33:55.005076Z  INFO market_data_collector::session: [MD#8] 订阅 1840/1840 ret=0
+2026-11-26T17:33:55.240255Z  INFO market_data_collector::session: [MD#1] 订阅完成 1842
+2026-11-26T17:33:55.240321Z ERROR market_data_collector::session: [MD#1] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.240628Z  INFO market_data_collector::session: [MD#2] 订阅完成 1841
+2026-11-26T17:33:55.240684Z ERROR market_data_collector::session: [MD#2] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.248557Z  INFO market_data_collector::session: [MD#0] 订阅完成 1842
+2026-11-26T17:33:55.248594Z ERROR market_data_collector::session: [MD#0] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.250612Z  INFO market_data_collector::session: [MD#5] 订阅完成 1841
+2026-11-26T17:33:55.250682Z ERROR market_data_collector::session: [MD#5] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.252137Z  INFO market_data_collector::session: [MD#3] 订阅完成 1841
+2026-11-26T17:33:55.252368Z ERROR market_data_collector::session: [MD#3] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.252455Z  INFO market_data_collector::session: [MD#4] 订阅完成 1841
+2026-11-26T17:33:55.252477Z ERROR market_data_collector::session: [MD#4] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.255750Z  INFO market_data_collector::session: [MD#9] 订阅完成 1838
+2026-11-26T17:33:55.255790Z ERROR market_data_collector::session: [MD#9] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.255987Z  INFO market_data_collector::session: [MD#6] 订阅完成 1840
+2026-11-26T17:33:55.256001Z ERROR market_data_collector::session: [MD#6] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.256142Z  INFO market_data_collector::session: [MD#13] 订阅完成 1838
+2026-11-26T17:33:55.256157Z ERROR market_data_collector::session: [MD#13] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.256373Z  INFO market_data_collector::session: [MD#7] 订阅完成 1840
+2026-11-26T17:33:55.256383Z ERROR market_data_collector::session: [MD#7] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.263549Z  INFO market_data_collector::session: [MD#10] 订阅完成 1838
+2026-11-26T17:33:55.263585Z ERROR market_data_collector::session: [MD#10] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.264678Z  INFO market_data_collector::session: [MD#14] 订阅完成 1838
+2026-11-26T17:33:55.264708Z ERROR market_data_collector::session: [MD#14] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.264724Z  INFO market_data_collector::session: [MD#15] 订阅完成 1837
+2026-11-26T17:33:55.264734Z ERROR market_data_collector::session: [MD#15] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.304729Z  INFO market_data_collector::session: [MD#12] 订阅完成 1838
+2026-11-26T17:33:55.304757Z ERROR market_data_collector::session: [MD#12] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.305639Z  INFO market_data_collector::session: [MD#8] 订阅完成 1840
+2026-11-26T17:33:55.305679Z ERROR market_data_collector::session: [MD#8] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:55.305755Z  INFO market_data_collector::session: [MD#11] 订阅完成 1838
+2026-11-26T17:33:55.305781Z ERROR market_data_collector::session: [MD#11] 登录+订阅完成（第 1 轮）
+2026-11-26T17:33:57.468422Z  INFO market_data_collector: ===== 运行 5 秒 | 已连 16 | 已登录 16 | 累计 tick 21194 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:33:57.520476Z  INFO market_data_collector::aggregate: [AGG] 已落盘 0 根 | 活跃桶 5146 | 内存常驻桶 5146（不再攒整天，内存恒定）| 盘前重演丢弃 13663 | 各member tick [MD#0:1324 MD#1:1355 MD#2:1356 MD#3:1325 MD#4:1336 MD#5:1335 MD#6:1298 MD#7:1318 MD#8:1317 MD#9:1304 MD#10:1335 MD#11:1301 MD#12:1322 MD#13:1316 MD#14:1332 MD#15:1321]
+2026-11-26T17:34:00.017673Z  INFO market_data_collector::writer: [WRT] 打开分片 20261126 → ./实测输出_凌晨/bars_20261126.jsonl
+2026-11-26T17:34:02.468618Z  INFO market_data_collector: ===== 运行 10 秒 | 已连 16 | 已登录 16 | 累计 tick 21556 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:02.528368Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 83 | 内存常驻桶 83（不再攒整天，内存恒定）| 盘前重演丢弃 13665 | 各member tick [MD#0:1356 MD#1:1384 MD#2:1384 MD#3:1338 MD#4:1379 MD#5:1361 MD#6:1314 MD#7:1330 MD#8:1340 MD#9:1315 MD#10:1377 MD#11:1314 MD#12:1351 MD#13:1323 MD#14:1352 MD#15:1339]
+2026-11-26T17:34:07.468761Z  INFO market_data_collector: ===== 运行 15 秒 | 已连 16 | 已登录 16 | 累计 tick 21831 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:07.529700Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 113 | 内存常驻桶 113（不再攒整天，内存恒定）| 盘前重演丢弃 13676 | 各member tick [MD#0:1380 MD#1:1414 MD#2:1400 MD#3:1356 MD#4:1413 MD#5:1382 MD#6:1318 MD#7:1339 MD#8:1353 MD#9:1323 MD#10:1417 MD#11:1324 MD#12:1374 MD#13:1332 MD#14:1367 MD#15:1356]
+2026-11-26T17:34:12.468898Z  INFO market_data_collector: ===== 运行 20 秒 | 已连 16 | 已登录 16 | 累计 tick 22051 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:12.530066Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 126 | 内存常驻桶 126（不再攒整天，内存恒定）| 盘前重演丢弃 13693 | 各member tick [MD#0:1404 MD#1:1435 MD#2:1408 MD#3:1368 MD#4:1435 MD#5:1402 MD#6:1320 MD#7:1344 MD#8:1362 MD#9:1334 MD#10:1452 MD#11:1327 MD#12:1398 MD#13:1335 MD#14:1374 MD#15:1370]
+2026-11-26T17:34:17.469088Z  INFO market_data_collector: ===== 运行 25 秒 | 已连 16 | 已登录 16 | 累计 tick 22343 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:17.725337Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 149 | 内存常驻桶 149（不再攒整天，内存恒定）| 盘前重演丢弃 13707 | 各member tick [MD#0:1434 MD#1:1463 MD#2:1428 MD#3:1386 MD#4:1473 MD#5:1422 MD#6:1332 MD#7:1356 MD#8:1373 MD#9:1346 MD#10:1492 MD#11:1333 MD#12:1421 MD#13:1342 MD#14:1390 MD#15:1383]
+2026-11-26T17:34:22.469273Z  INFO market_data_collector: ===== 运行 30 秒 | 已连 16 | 已登录 16 | 累计 tick 22633 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:22.740335Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 178 | 内存常驻桶 178（不再攒整天，内存恒定）| 盘前重演丢弃 13717 | 各member tick [MD#0:1464 MD#1:1489 MD#2:1442 MD#3:1407 MD#4:1505 MD#5:1438 MD#6:1343 MD#7:1363 MD#8:1389 MD#9:1356 MD#10:1522 MD#11:1344 MD#12:1444 MD#13:1349 MD#14:1412 MD#15:1397]
+2026-11-26T17:34:27.469447Z  INFO market_data_collector: ===== 运行 35 秒 | 已连 16 | 已登录 16 | 累计 tick 22979 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:27.741052Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 198 | 内存常驻桶 198（不再攒整天，内存恒定）| 盘前重演丢弃 13736 | 各member tick [MD#0:1499 MD#1:1522 MD#2:1473 MD#3:1427 MD#4:1545 MD#5:1465 MD#6:1350 MD#7:1375 MD#8:1405 MD#9:1363 MD#10:1548 MD#11:1353 MD#12:1472 MD#13:1366 MD#14:1434 MD#15:1418]
+2026-11-26T17:34:32.469560Z  INFO market_data_collector: ===== 运行 40 秒 | 已连 16 | 已登录 16 | 累计 tick 23271 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:32.928065Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 203 | 内存常驻桶 203（不再攒整天，内存恒定）| 盘前重演丢弃 13748 | 各member tick [MD#0:1527 MD#1:1549 MD#2:1494 MD#3:1440 MD#4:1569 MD#5:1479 MD#6:1358 MD#7:1384 MD#8:1417 MD#9:1370 MD#10:1574 MD#11:1359 MD#12:1494 MD#13:1381 MD#14:1450 MD#15:1445]
+2026-11-26T17:34:37.469721Z  INFO market_data_collector: ===== 运行 45 秒 | 已连 16 | 已登录 16 | 累计 tick 23494 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:38.020613Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 206 | 内存常驻桶 206（不再攒整天，内存恒定）| 盘前重演丢弃 13756 | 各member tick [MD#0:1557 MD#1:1573 MD#2:1512 MD#3:1442 MD#4:1601 MD#5:1496 MD#6:1361 MD#7:1389 MD#8:1429 MD#9:1372 MD#10:1601 MD#11:1364 MD#12:1510 MD#13:1390 MD#14:1460 MD#15:1455]
+2026-11-26T17:34:42.469875Z  INFO market_data_collector: ===== 运行 50 秒 | 已连 16 | 已登录 16 | 累计 tick 23678 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:43.021964Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 209 | 内存常驻桶 209（不再攒整天，内存恒定）| 盘前重演丢弃 13758 | 各member tick [MD#0:1575 MD#1:1595 MD#2:1522 MD#3:1454 MD#4:1628 MD#5:1510 MD#6:1363 MD#7:1395 MD#8:1440 MD#9:1374 MD#10:1625 MD#11:1371 MD#12:1524 MD#13:1391 MD#14:1470 MD#15:1462]
+2026-11-26T17:34:47.469991Z  INFO market_data_collector: ===== 运行 55 秒 | 已连 16 | 已登录 16 | 累计 tick 23875 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:48.023935Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 209 | 内存常驻桶 209（不再攒整天，内存恒定）| 盘前重演丢弃 13774 | 各member tick [MD#0:1596 MD#1:1617 MD#2:1527 MD#3:1461 MD#4:1654 MD#5:1527 MD#6:1363 MD#7:1399 MD#8:1452 MD#9:1387 MD#10:1653 MD#11:1377 MD#12:1542 MD#13:1397 MD#14:1475 MD#15:1477]
+2026-11-26T17:34:52.470148Z  INFO market_data_collector: ===== 运行 60 秒 | 已连 16 | 已登录 16 | 累计 tick 24083 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:53.028706Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 210 | 内存常驻桶 210（不再攒整天，内存恒定）| 盘前重演丢弃 13790 | 各member tick [MD#0:1619 MD#1:1644 MD#2:1535 MD#3:1474 MD#4:1682 MD#5:1545 MD#6:1366 MD#7:1403 MD#8:1462 MD#9:1391 MD#10:1687 MD#11:1381 MD#12:1563 MD#13:1406 MD#14:1488 MD#15:1489]
+2026-11-26T17:34:57.470275Z  INFO market_data_collector: ===== 运行 65 秒 | 已连 16 | 已登录 16 | 累计 tick 24285 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:34:58.030909Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5146 根 | 活跃桶 212 | 内存常驻桶 212（不再攒整天，内存恒定）| 盘前重演丢弃 13805 | 各member tick [MD#0:1640 MD#1:1665 MD#2:1537 MD#3:1485 MD#4:1703 MD#5:1555 MD#6:1369 MD#7:1408 MD#8:1473 MD#9:1395 MD#10:1720 MD#11:1387 MD#12:1577 MD#13:1415 MD#14:1498 MD#15:1499]
+2026-11-26T17:35:02.470469Z  INFO market_data_collector: ===== 运行 70 秒 | 已连 16 | 已登录 16 | 累计 tick 24605 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:35:03.031374Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5358 根 | 活跃桶 83 | 内存常驻桶 83（不再攒整天，内存恒定）| 盘前重演丢弃 13812 | 各member tick [MD#0:1664 MD#1:1707 MD#2:1579 MD#3:1498 MD#4:1745 MD#5:1576 MD#6:1384 MD#7:1422 MD#8:1484 MD#9:1408 MD#10:1769 MD#11:1394 MD#12:1614 MD#13:1433 MD#14:1522 MD#15:1514]
+2026-11-26T17:35:07.470634Z  INFO market_data_collector: ===== 运行 75 秒 | 已连 16 | 已登录 16 | 累计 tick 24973 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:35:08.235140Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5358 根 | 活跃桶 115 | 内存常驻桶 115（不再攒整天，内存恒定）| 盘前重演丢弃 13839 | 各member tick [MD#0:1702 MD#1:1733 MD#2:1603 MD#3:1516 MD#4:1779 MD#5:1602 MD#6:1387 MD#7:1434 MD#8:1497 MD#9:1414 MD#10:1797 MD#11:1402 MD#12:1639 MD#13:1444 MD#14:1539 MD#15:1528]
+2026-11-26T17:35:12.470800Z  INFO market_data_collector: ===== 运行 80 秒 | 已连 16 | 已登录 16 | 累计 tick 25210 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:35:13.431319Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5358 根 | 活跃桶 134 | 内存常驻桶 134（不再攒整天，内存恒定）| 盘前重演丢弃 13855 | 各member tick [MD#0:1732 MD#1:1756 MD#2:1616 MD#3:1530 MD#4:1804 MD#5:1619 MD#6:1389 MD#7:1440 MD#8:1507 MD#9:1420 MD#10:1824 MD#11:1414 MD#12:1661 MD#13:1457 MD#14:1553 MD#15:1544]
+2026-11-26T17:35:17.470946Z  INFO market_data_collector: ===== 运行 85 秒 | 已连 16 | 已登录 16 | 累计 tick 25561 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:35:18.437994Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5358 根 | 活跃桶 175 | 内存常驻桶 175（不再攒整天，内存恒定）| 盘前重演丢弃 13866 | 各member tick [MD#0:1762 MD#1:1790 MD#2:1644 MD#3:1546 MD#4:1836 MD#5:1638 MD#6:1402 MD#7:1453 MD#8:1527 MD#9:1428 MD#10:1857 MD#11:1429 MD#12:1690 MD#13:1475 MD#14:1570 MD#15:1562]
+2026-11-26T17:35:22.471111Z  INFO market_data_collector: ===== 运行 90 秒 | 已连 16 | 已登录 16 | 累计 tick 25890 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:35:23.514782Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5358 根 | 活跃桶 184 | 内存常驻桶 184（不再攒整天，内存恒定）| 盘前重演丢弃 13875 | 各member tick [MD#0:1786 MD#1:1817 MD#2:1669 MD#3:1559 MD#4:1863 MD#5:1661 MD#6:1414 MD#7:1464 MD#8:1546 MD#9:1437 MD#10:1886 MD#11:1446 MD#12:1717 MD#13:1489 MD#14:1594 MD#15:1581]
+2026-11-26T17:35:27.471284Z  INFO market_data_collector: ===== 运行 95 秒 | 已连 16 | 已登录 16 | 累计 tick 26194 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:35:28.524534Z  INFO market_data_collector::aggregate: [AGG] 已落盘 5358 根 | 活跃桶 189 | 内存常驻桶 189（不再攒整天，内存恒定）| 盘前重演丢弃 13898 | 各member tick [MD#0:1817 MD#1:1847 MD#2:1694 MD#3:1575 MD#4:1895 MD#5:1678 MD#6:1425 MD#7:1474 MD#8:1561 MD#9:1450 MD#10:1920 MD#11:1458 MD#12:1743 MD#13:1501 MD#14:1608 MD#15:1597]
+2026-11-26T17:35:32.343417Z ERROR market_data_collector: 
+[RUN] 收到 Ctrl+C：停重连 → 收盘活跃桶 → 落盘线程收尾 fsync → 退出（再按一次强制，但只会丢最后 60 秒）
+2026-11-26T17:35:32.431432Z  INFO market_data_collector::aggregate: [AGG] 收到退出信号，开始收尾：把活跃桶全部收盘送落盘（当天已在分片里，几乎秒完）
+2026-11-26T17:35:32.431611Z  INFO market_data_collector::aggregate: [AGG] 聚合线程退出 | 共收盘 5555 根（已全部追加进当天分片，崩溃最多丢最后 60 秒）
+2026-11-26T17:35:32.433792Z  INFO market_data_collector::writer: [WRT] 收好分片 20261126（累计 5555 根）
+2026-11-26T17:35:32.433840Z  INFO market_data_collector::writer: [WRT] 落盘线程退出 | 共 1 个分片文件、5555 根 bar 已安全落盘（fsync 每 60 秒一次）
+2026-11-26T17:35:32.471522Z  INFO market_data_collector: ===== 运行 100 秒 | 已连 16 | 已登录 16 | 累计 tick 26608 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:35:32.471619Z  INFO market_data_collector: [RUN] 停止标志已置位，等待 member 线程退出（最长退避 60s）
+2026-11-26T17:35:32.523841Z  INFO market_data_collector::session: [MD#1] 收到退出信号，线程退出
+2026-11-26T17:35:32.524816Z  INFO market_data_collector::session: [MD#10] 收到退出信号，线程退出
+2026-11-26T17:35:32.525336Z  INFO market_data_collector::session: [MD#5] 收到退出信号，线程退出
+2026-11-26T17:35:32.526046Z  INFO market_data_collector::session: [MD#14] 收到退出信号，线程退出
+2026-11-26T17:35:32.526156Z  INFO market_data_collector::session: [MD#2] 收到退出信号，线程退出
+2026-11-26T17:35:32.526997Z  INFO market_data_collector::session: [MD#4] 收到退出信号，线程退出
+2026-11-26T17:35:32.527888Z  INFO market_data_collector::session: [MD#7] 收到退出信号，线程退出
+2026-11-26T17:35:32.528276Z  INFO market_data_collector::session: [MD#12] 收到退出信号，线程退出
+2026-11-26T17:35:32.529507Z  INFO market_data_collector::session: [MD#9] 收到退出信号，线程退出
+2026-11-26T17:35:32.530067Z  INFO market_data_collector::session: [MD#0] 收到退出信号，线程退出
+2026-11-26T17:35:32.533658Z  INFO market_data_collector::session: [MD#11] 收到退出信号，线程退出
+2026-11-26T17:35:33.018900Z  INFO market_data_collector::session: [MD#13] 收到退出信号，线程退出
+2026-11-26T17:35:33.022561Z  INFO market_data_collector::session: [MD#15] 收到退出信号，线程退出
+2026-11-26T17:35:33.023806Z  INFO market_data_collector::session: [MD#3] 收到退出信号，线程退出
+2026-11-26T17:35:33.026940Z  INFO market_data_collector::session: [MD#6] 收到退出信号，线程退出
+2026-11-26T17:35:33.032916Z  INFO market_data_collector::session: [MD#8] 收到退出信号，线程退出
+2026-11-26T17:35:33.033452Z  INFO market_data_collector: [RUN] member 线程全部退出，等聚合线程收尾
+2026-11-26T17:35:33.033491Z  INFO market_data_collector: [RUN] 全部退出。当天数据已在分片文件里，随时用 `合并 今日` 生成成品 Parquet。

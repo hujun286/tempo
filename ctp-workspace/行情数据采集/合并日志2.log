@@ -1,0 +1,4 @@
+2026-11-26T17:36:12.925764Z  INFO market_data_collector::config: [CFG] 已加载运行配置 /home/z/my-project/ctp-workspace/行情数据采集/配置_分钟K线.toml
+2026-11-26T17:36:12.926230Z  INFO market_data_collector: [MERGE] 合并模式 | 分片目录 ./data_数据/分钟分片 | 成品目录 ./data_数据/分钟K线/ | 日期 ["20261126"]
+2026-11-26T17:36:12.961253Z  INFO market_data_collector::merge: [MERGE] 20261126 读到 5555 根有效 bar（跳过坏行 0）
+2026-11-26T17:36:13.016131Z  INFO market_data_collector::merge: [MERGE] ✅ 20261126 合并完成 → ./data_数据/分钟K线/bars_20261126.parquet 共 5597 根（其中补齐 42 根，涉及 246 个有缺口合约）

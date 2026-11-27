@@ -1,0 +1,11 @@
+[paths]
+contracts_file = "./data/contracts/contracts_filtered_2701.txt"
+flow_md = "./data/flow/md"
+flow_td = "./data/flow/td"
+logs = "./logs"
+
+[hard_limits]
+max_lots_per_order = 1
+max_premium_per_lot = 5.0
+max_orders_per_minute = 3
+allow_market_order = false

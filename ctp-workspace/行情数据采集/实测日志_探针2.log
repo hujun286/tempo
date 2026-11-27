@@ -1,0 +1,87 @@
+2026-11-26T17:31:45.710021Z  INFO market_data_collector::config: [CFG] 已加载运行配置 /home/z/my-project/ctp-workspace/行情数据采集/配置_分钟K线.toml
+2026-11-26T17:31:45.710699Z  INFO market_data_collector: [CFG] 已加载 ./config/secrets.toml
+2026-11-26T17:31:45.731769Z  INFO market_data_collector: [CFG] 工作区根 . | 合约 29433 条 | member 16 个 | md_port 61213 | 断线重连 开 | 分片fsync 60秒
+2026-11-26T17:31:45.737125Z  INFO market_data_collector::contracts: [SHARD] 交易所 CFFEX: 800 条
+2026-11-26T17:31:45.737637Z  INFO market_data_collector::contracts: [SHARD] 交易所 CZCE: 6745 条
+2026-11-26T17:31:45.738475Z  INFO market_data_collector::contracts: [SHARD] 交易所 DCE: 9894 条
+2026-11-26T17:31:45.738818Z  INFO market_data_collector::contracts: [SHARD] 交易所 GFEX: 4185 条
+2026-11-26T17:31:45.738910Z  INFO market_data_collector::contracts: [SHARD] 交易所 INE: 911 条
+2026-11-26T17:31:45.739395Z  INFO market_data_collector::contracts: [SHARD] 交易所 SHFE: 6898 条
+2026-11-26T17:31:45.739441Z  INFO market_data_collector: [CFG] 分片输出目录 ./实测输出_凌晨（每根bar收盘即追加，每60秒fsync）
+2026-11-26T17:31:45.839187Z  INFO market_data_collector::session: [MD#0] 启动 front=tcp://101.231.185.57:61213 合约数=1842（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13419) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-11-26T17:31:45.842638Z  INFO market_data_collector::session: [MD#2] 启动 front=tcp://101.231.185.59:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13421) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.844542Z  INFO market_data_collector::session: [MD#3] 启动 front=tcp://101.231.185.60:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13422) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.846555Z  INFO market_data_collector::session: [MD#1] 启动 front=tcp://101.231.185.58:61213 合约数=1842（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13420) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.848557Z  INFO market_data_collector::session: [MD#10] 启动 front=tcp://140.206.102.78:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:31:45.850010Z  INFO market_data_collector::session: [MD#6] 启动 front=tcp://180.166.83.74:61213 合约数=1840（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13425) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+
+thread '<unnamed>' (13429) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.850531Z  INFO market_data_collector::session: [MD#7] 启动 front=tcp://180.166.83.75:61213 合约数=1840（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:31:45.852212Z  INFO market_data_collector::session: [MD#9] 启动 front=tcp://140.206.102.77:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13428) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+
+thread '<unnamed>' (13426) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.852963Z  INFO market_data_collector::session: [MD#13] 启动 front=tcp://112.65.132.22:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+2026-11-26T17:31:45.853020Z  INFO market_data_collector: [RUN] 16 个 member 已启动，进入健康巡检（非交易时段空转属正常；Ctrl+C 优雅退出，数据每60秒落盘一次）
+2026-11-26T17:31:45.854274Z  INFO market_data_collector::session: [MD#4] 启动 front=tcp://180.166.83.72:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13423) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.854701Z  INFO market_data_collector::session: [MD#8] 启动 front=tcp://140.206.102.76:61213 合约数=1840（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13427) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.854856Z  INFO market_data_collector::session: [MD#11] 启动 front=tcp://112.65.132.105:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13430) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.854991Z  INFO market_data_collector::session: [MD#5] 启动 front=tcp://180.166.83.73:61213 合约数=1841（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13424) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.855120Z  INFO market_data_collector::session: [MD#14] 启动 front=tcp://112.65.132.23:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13433) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.855240Z  INFO market_data_collector::session: [MD#12] 启动 front=tcp://112.65.132.21:61213 合约数=1838（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13431) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.855361Z  INFO market_data_collector::session: [MD#15] 启动 front=tcp://112.65.132.25:61213 合约数=1837（方案B：事件驱动重连，无 join 阻塞）
+
+thread '<unnamed>' (13434) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+
+thread '<unnamed>' (13432) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:146:58:
+failed to get: DlSym { source: "/home/z/my-project/ctp-workspace/行情数据采集/lib/libthostmduserapi_se.so: undefined symbol: _ZN15CThostFtdcMdApi15CreateFtdcMdApiEPKcbbb" }
+2026-11-26T17:31:45.855988Z  INFO market_data_collector::aggregate: [AGG] 聚合线程退出 | 共收盘 0 根（已全部追加进当天分片，崩溃最多丢最后 60 秒）
+2026-11-26T17:31:45.856047Z  INFO market_data_collector::writer: [WRT] 落盘线程退出 | 共 0 个分片文件、0 根 bar 已安全落盘（fsync 每 60 秒一次）
+2026-11-26T17:31:50.853185Z  INFO market_data_collector: ===== 运行 5 秒 | 已连 0 | 已登录 0 | 累计 tick 0 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:31:55.853486Z  INFO market_data_collector: ===== 运行 10 秒 | 已连 0 | 已登录 0 | 累计 tick 0 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:32:00.853670Z  INFO market_data_collector: ===== 运行 15 秒 | 已连 0 | 已登录 0 | 累计 tick 0 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:32:05.708281Z ERROR market_data_collector: 
+[RUN] 收到 Ctrl+C：停重连 → 收盘活跃桶 → 落盘线程收尾 fsync → 退出（再按一次强制，但只会丢最后 60 秒）
+2026-11-26T17:32:05.853916Z  INFO market_data_collector: ===== 运行 20 秒 | 已连 0 | 已登录 0 | 累计 tick 0 | 累计断线 0 次 | 交易所时间回拨 0 | 主动重建 0 =====
+2026-11-26T17:32:05.853997Z  INFO market_data_collector: [RUN] 停止标志已置位，等待 member 线程退出（最长退避 60s）
+2026-11-26T17:32:05.854063Z  INFO market_data_collector: [RUN] member 线程全部退出，等聚合线程收尾
+2026-11-26T17:32:05.854068Z  INFO market_data_collector: [RUN] 全部退出。当天数据已在分片文件里，随时用 `合并 今日` 生成成品 Parquet。

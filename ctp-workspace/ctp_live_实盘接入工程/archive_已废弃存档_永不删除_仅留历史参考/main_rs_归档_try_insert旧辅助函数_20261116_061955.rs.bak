@@ -1,0 +1,62 @@
+// 归档：try_insert 从 src/main.rs 移除。
+// 原因：旧 run_test_2_2 的辅助函数，已无调用者，且硬编码 EXCHANGE。
+
+fn try_insert(api: &TraderApi, rx: &Receiver<Event>, req_id: i32,
+              instrument: &str, price: f64, volume: i32,
+              direction: i8, offset: u8, label: &str) {
+    let mut order = CThostFtdcInputOrderField::default();
+    copy_str(&mut order.BrokerID, broker());
+    copy_str(&mut order.InvestorID, user());
+    copy_str(&mut order.InstrumentID, instrument);
+    copy_str(&mut order.ExchangeID, EXCHANGE);
+    let order_ref = format!("{}", req_id);
+    copy_str(&mut order.OrderRef, &order_ref);
+    order.Direction = direction;
+    order.CombOffsetFlag[0] = offset as i8;
+    order.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation as i8;
+    order.OrderPriceType = THOST_FTDC_OPT_LimitPrice as i8;
+    order.LimitPrice = price;
+    order.VolumeTotalOriginal = volume;
+    order.TimeCondition = THOST_FTDC_TC_GFD as i8;
+    order.VolumeCondition = THOST_FTDC_VC_AV as i8;
+    order.ContingentCondition = THOST_FTDC_CC_Immediately as i8;
+    order.ForceCloseReason = THOST_FTDC_FCC_NotForceClose as i8;
+    order.IsAutoSuspend = 0;
+    order.UserForceClose = 0;
+
+    println!("\n[{}] 合约={} 价格={} 手数={} 方向={} 开平={}",
+             label, instrument, price, volume, direction, offset);
+    let ret = api.req_order_insert(&mut order, req_id);
+    println!("  req_order_insert ret={}", ret);
+
+    let deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        let remaining = deadline.saturating_duration_since(Instant::now());
+        if remaining.is_zero() {
+            println!("  [超时] 10 秒内无响应");
+            return;
+        }
+        match rx.recv_timeout(remaining) {
+            Ok(Event::InsertRsp(Some((id, m)))) => {
+                println!("  ✅ 柜台拒绝  ErrorID={}  Msg={}", id, m);
+                return;
+            }
+            Ok(Event::ErrRtnInsert(Some((id, m)))) => {
+                println!("  ✅ 错误回报  ErrorID={}  Msg={}", id, m);
+                return;
+            }
+            Ok(Event::InsertRsp(None)) => {
+                println!("  ⚠️ InsertRsp 成功（None），继续等委托回报");
+            }
+            Ok(Event::RtnOrder { sys_id, status, .. }) => {
+                println!("  委托回报 sys_id={:?} status={}", sys_id, status);
+                if !sys_id.is_empty() {
+                    println!("  ⚠️ 此单被接受（预期应被拒），需手动撤单或忽略");
+                    return;
+                }
+            }
+            Ok(_) => {}
+            Err(_) => return,
+        }
+    }
+}

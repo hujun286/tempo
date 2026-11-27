@@ -1,0 +1,3 @@
+2026-11-26T17:35:58.475707Z  INFO market_data_collector::config: [CFG] 已加载运行配置 /home/z/my-project/ctp-workspace/行情数据采集/配置_分钟K线.toml
+2026-11-26T17:35:58.476214Z  INFO market_data_collector: [MERGE] 合并模式 | 分片目录 ./data_数据/分钟分片 | 成品目录 ./data_数据/分钟K线/ | 日期 ["20261126"]
+2026-11-26T17:35:58.476256Z ERROR market_data_collector: [MERGE] ❌ 合并 20261126 失败: 找不到分片文件 ./data_数据/分钟分片/bars_20261126.jsonl 或 ./data_数据/分钟分片/bars_20261126.jsonl.zst（这天没采到数据？）

@@ -1,0 +1,85 @@
+# ============================================================================
+# ★v1.5 Workspace 化（D030）+ 第3棒修正（2026-11-26）：
+#   - 修正：原文件有两个 [package] 段且首段残废（name/version 被注释）→ TOML
+#     "duplicate key" 解析错误，这是本文件历史上"编译不通过"的直接原因之一
+#   - 修正：[workspace].members 指向不存在的子目录 → 改为 ["."]（根即包自身）
+#   - 修正：ctp2rs path 依赖原指向第3棒沙盒绝对路径 → 改为相对路径
+#     ./vendor_ctp2rs/ctp2rs-0.1.11-alpha1（vendor 已随工作区打包，离线可编）
+#   - [workspace.dependencies] 统一 15 个依赖版本（本包以 xxx.workspace = true 继承）
+#   - [workspace.lints.clippy] 四条硬门禁（unwrap/expect/print stdout/stderr = deny），
+#     包级 [lints] workspace=true 继承；与宪法守卫 20 条铁律对齐
+#   - autobins=false + 显式 [[bin]] 清单（D036）：v2.rs 是未完成占位版（含 11 处
+#     `<...>` 类型占位），不参与编译与 fmt --check；哪天修好了再加回 [[bin]]
+# ============================================================================
+
+[workspace]
+members = ["."]
+resolver = "2"
+
+[workspace.dependencies]
+# CTP 动态绑定库，本地 path 依赖，避免联网拉 crates.io
+# v1alpha1 是当前稳定 API，ctp_v6_7_7 对应 7090 实盘的 CTP 6.7.7
+# ★v1.5（D023）：0.1.9 → 0.1.11-alpha1——Drop 悬垂修复（release 后不再触碰悬垂 ptr）
+#   正是方案B teardown→重建路径需要的安全修复；v1_4 零代码改动兼容（试编译实证）
+# ★第3棒修正（2026-11-26）：相对路径 vendor，置于本 workspace 目录外（ctp-workspace/vendor_ctp2rs/），
+#   离线可编且脱离 workspace 成员身份——path 依赖若在 workspace 内会被 clippy 全量检查上游代码
+ctp2rs = { path = "../../vendor_ctp2rs/ctp2rs-0.1.11-alpha1", default-features = false, features = ["v1alpha1", "ctp_v6_7_7"] }
+#tracing = "0.1"
+arrow  = "58"
+parquet = "58"
+# ★v1.5（D027）chrono 评估结论：保留但裁剪 features。
+#   v1_4 实际用点仅 Local::now()/timestamp_millis_opt/format（bar 分钟对齐用本机墙钟——
+#   规避盘前重演污染，理由见决策日志 D027）；交易所时间已在 TradingDay/UpdateTime 里。
+#   default-features=false 裁掉旧 time 库/完整解析器，只留 clock+std+alloc。
+chrono = { version = "0.4.38", default-features = false, features = ["clock", "std", "alloc"] }
+
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing = "0.1"
+ctrlc  = "3"
+# 配置读取：serde 反序列化，toml 解析 TOML 文件
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+# 已删：tokio/encoding_rs/h5i-db-core/anyhow（Rust 1.100 cargo::unused_dependencies 实证本包未用）
+# ★v1.5（D028）jsonl 归档压缩：合并成功后历史分片压成 .jsonl.zst（level 10，实测压到 ~5%）
+zstd = "0.13"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+
+[package]
+name = "rust_ctp_test"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100"
+license = "MIT"
+authors = ["Placeholder Author <placeholder@example.com>"]
+
+# D036 显式 bin 清单（第3棒 2026-11-26 修正）：本工程源码为拆模块平铺形态，
+# main.rs 是唯一 bin root（v1.3 分片落盘版，mod 声明 aggregate/config/contracts/events/
+# merge/session/spi/stats/writer 九模块）。原清单指向的 src/bin/xxx 单文件版
+# 属于 ctp_live_实盘接入工程（另一套），不在本包，已从清单移除。
+autobins = false
+
+[[bin]]
+name = "分钟k线落盘_v1_3"
+path = "main.rs"
+
+[dependencies]
+ctp2rs.workspace = true
+arrow.workspace = true
+parquet.workspace = true
+chrono.workspace = true
+tracing-subscriber.workspace = true
+tracing.workspace = true
+ctrlc.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+zstd.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,15 @@
+# Cargo 国内镜像配置 —— 放到 ~/.cargo/config.toml（或工程 .cargo/config.toml）
+# 2026-11-25 实测：rsproxy 下载 ~9.4MB/s；直连 crates.io 在国内高峰期常常 10KB/s 甚至超时。
+# 有了这份配置，"反复下载依赖"的等待从分钟级降到秒级。
+
+[source.crates-io]
+replace-with = 'rsproxy-sparse'
+
+[source.rsproxy-sparse]
+registry = "sparse+https://rsproxy.cn/index/"
+
+[registries.rsproxy]
+index = "sparse+https://rsproxy.cn/index/"
+
+[net]
+git-fetch-with-cli = true

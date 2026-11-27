@@ -1,0 +1,89 @@
+# ============================================================================
+# 分钟K线落盘 v1.5 · justfile（17 配方：构建/门禁/合并/运行全托管）
+# 安装：cargo binstall cargo-just --no-confirm || cargo install cargo-just --locked
+# 工具约定（用户规矩）：binstall 优先，失败再 cargo install
+#   cargo binstall cargo-deny rust-script --no-confirm \
+#     || (cargo install cargo-deny --locked && cargo install rust-script --locked)
+# 运行方式约定（D032）：cargo 只在改动后用于验证；日常运行/合并一律直跑二进制
+#   ./target/release/分钟k线落盘_v1_4  与  ./target/release/分钟k线落盘_v1_4 合并 今日
+# ============================================================================
+
+# 默认配方 = 帮助
+default:
+    @just --list
+
+# ---------- 构建 ----------
+
+# dev 构建（快速验证能编译）
+build:
+    cargo build --bin 分钟k线落盘_v1_4
+
+# release 构建（实盘/合并用；产出 ./target/release/分钟k线落盘_v1_4）
+build-release:
+    cargo build --release --bin 分钟k线落盘_v1_4
+
+# Cranelift 后端 dev 构建（D030：开发迭代快速编译；实盘仍用 build-release）
+build-cl:
+    RUSTFLAGS="-Zcodegen-backend=cranelift" cargo build --bin 分钟k线落盘_v1_4
+
+# ---------- 代码质量门禁 ----------
+
+# 格式化（全文；D017 拍板全文 fmt）
+fmt:
+    cargo fmt
+
+# 格式检查（CI 用，不落盘）
+fmt-check:
+    cargo fmt --check
+
+# clippy（v1_4 自身 0 warning 为过线标准）
+clippy:
+    cargo clippy --bin 分钟k线落盘_v1_4 -- -D warnings
+
+# 单测（20 个：config 1 / aggregate 1 / session 9 / merge 9）
+test:
+    cargo test --bin 分钟k线落盘_v1_4
+
+# 一键三件套（改动后必跑）
+ci:
+    cargo fmt --check && cargo clippy --bin 分钟k线落盘_v1_4 -- -D warnings && cargo test --bin 分钟k线落盘_v1_4
+
+# 危险代码检查器（零依赖，rustc 秒编；生产区命中基线见交付说明）
+关卡:
+    rustc -O scripts/检查危险代码.rs -o /tmp/检查危险代码 && /tmp/检查危险代码 src/bin/分钟k线落盘_v1_4/
+
+# ---------- 依赖治理 ----------
+
+# 7 天依赖冷却检查（D030/D034：crates.io 发布 <7 天的 registry 依赖点名 + 退出码 1）
+冷却:
+    rust-script scripts/检查依赖冷却.rs || python3 scripts/检查依赖冷却.py
+
+# cargo-deny（bans/licenses/sources/advisories；首跑拉 RustSec 数据库需 GitHub 可达）
+deny:
+    cargo deny check
+
+# ---------- 运行 / 合并（release 二进制直跑，不经 cargo） ----------
+
+# 采集模式（secrets 路径见 config.rs 默认值；实盘验证先 SimNow/收盘时段）
+run secrets='config/secrets.toml':
+    ./target/release/分钟k线落盘_v1_4 {{secrets}}
+
+# debug 直跑（调试用）
+run-debug secrets='config/secrets.toml':
+    ./target/debug/分钟k线落盘_v1_4 {{secrets}}
+
+# 合并（release 直跑；`just 合并 今日` 或 `just 合并 20261125`）
+合并 日期='今日':
+    ./target/release/分钟k线落盘_v1_4 合并 {{日期}}
+
+# ---------- 数据检查 ----------
+
+# parquet 样本 schema 检查（列名导向验证，D031）
+parquet 文件:
+    rust-script scripts/示例_下游按列名读取.rs {{文件}}
+
+# ---------- 打包 ----------
+
+# 工作快照（tar.gz + git commit；rust-script 版）
+打包:
+    rust-script scripts/打包工作快照.rs

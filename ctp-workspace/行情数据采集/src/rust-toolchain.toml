@@ -1,0 +1,3 @@
+[toolchain]
+channel = "nightly"  # 使用你当前安装的版本
+components = ["rustfmt", "clippy"]

@@ -1,0 +1,10 @@
+2026-11-26T17:47:54.079847Z  INFO market_data_collector::config: [CFG] 已加载运行配置 /home/z/my-project/ctp-workspace/行情数据采集/配置_分钟K线.toml
+2026-11-26T17:47:54.080495Z  INFO market_data_collector: [CFG] 已加载 ./config/secrets.toml
+2026-11-26T17:47:54.102048Z  INFO market_data_collector: [CFG] 工作区根 . | 合约 29433 条 | member 16 个 | md_port 61213 | 断线重连 开 | 分片fsync 60秒
+2026-11-26T17:47:54.107597Z  INFO market_data_collector::contracts: [SHARD] 交易所 CFFEX: 800 条
+2026-11-26T17:47:54.108152Z  INFO market_data_collector::contracts: [SHARD] 交易所 CZCE: 6745 条
+2026-11-26T17:47:54.109085Z  INFO market_data_collector::contracts: [SHARD] 交易所 DCE: 9894 条
+2026-11-26T17:47:54.109454Z  INFO market_data_collector::contracts: [SHARD] 交易所 GFEX: 4185 条
+2026-11-26T17:47:54.109541Z  INFO market_data_collector::contracts: [SHARD] 交易所 INE: 911 条
+2026-11-26T17:47:54.110080Z  INFO market_data_collector::contracts: [SHARD] 交易所 SHFE: 6898 条
+2026-11-26T17:47:54.110187Z  INFO market_data_collector: [CFG] 分片输出目录 ./实测输出_凌晨3（每根bar收盘即追加，每60秒fsync）

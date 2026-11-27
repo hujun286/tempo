@@ -1,0 +1,182 @@
+//! 行情认证探测：直接 ReqUserLogin，不认证，看返回码。
+//! ErrorID=0  -> 不需要认证
+//! ErrorID=63 -> 需要认证（ctp2rs 0.1.9 行情侧不支持，需换方案）
+
+use std::env;
+use std::sync::mpsc;
+use std::time::Duration;
+
+use ctp2rs::ffi::{AssignFromString, WrapToString};
+use ctp2rs::v1alpha1::*;
+
+const MD_DYNLIB: &str = "lib/libthostmduserapi_se.so";
+const FRONT: &str = "tcp://101.231.185.57:61213";
+const BROKER: &str = "7090";
+const USER: &str = "85071347";
+const PASSWORD: &str = "hj485860"; // 只改这一行
+
+#[derive(Debug)]
+enum Evt {
+    Connected,
+    Disconnected(i32),
+    Login(Option<CThostFtdcRspInfoField>),
+    SubRsp(Option<CThostFtdcRspInfoField>, String),
+    Tick(String, f64, f64, f64),
+}
+
+struct ProbeSpi {
+    tx: mpsc::SyncSender<Evt>,
+}
+
+impl MdSpi for ProbeSpi {
+    fn on_front_connected(&mut self) {
+        let _ = self.tx.send(Evt::Connected);
+    }
+    fn on_front_disconnected(&mut self, reason: i32) {
+        let _ = self.tx.send(Evt::Disconnected(reason));
+    }
+    fn on_rsp_user_login(
+        &mut self,
+        _rsp_user_login: Option<&CThostFtdcRspUserLoginField>,
+        rsp_info: Option<&CThostFtdcRspInfoField>,
+        _request_id: i32,
+        _is_last: bool,
+    ) {
+        let _ = self.tx.send(Evt::Login(rsp_info.cloned()));
+    }
+    fn on_rsp_sub_market_data(
+        &mut self,
+        specific_instrument: Option<&CThostFtdcSpecificInstrumentField>,
+        rsp_info: Option<&CThostFtdcRspInfoField>,
+        _request_id: i32,
+        _is_last: bool,
+    ) {
+        let code = specific_instrument
+            .map(|s| s.InstrumentID.to_string())
+            .unwrap_or_default();
+        let _ = self.tx.send(Evt::SubRsp(rsp_info.cloned(), code));
+    }
+    fn on_rtn_depth_market_data(
+        &mut self,
+        depth_market_data: Option<&CThostFtdcDepthMarketDataField>,
+    ) {
+        if let Some(q) = depth_market_data {
+            let _ = self.tx.send(Evt::Tick(
+                q.InstrumentID.to_string(),
+                q.LastPrice,
+                q.BidPrice1,
+                q.AskPrice1,
+            ));
+        }
+    }
+    fn on_rsp_error(
+        &mut self,
+        p_rsp_info: Option<&CThostFtdcRspInfoField>,
+        n_request_id: i32,
+        _b_is_last: bool,
+    ) {
+        if let Some(e) = p_rsp_info {
+            println!(
+                "[RSP ERROR] request_id={} ErrorID={} ErrorMsg={}",
+                n_request_id,
+                e.ErrorID,
+                e.ErrorMsg.to_string()
+            );
+        }
+    }
+}
+
+fn main() {
+    let instrument = env::args().nth(1).unwrap_or_else(|| "pp2701".to_string());
+
+    std::fs::create_dir_all("./md_flow").ok();
+
+    let mdapi = MdApi::create_api(MD_DYNLIB, "./md_flow/", false, false);
+    println!("[MD] api_version={}", mdapi.get_api_version());
+
+    let (tx, rx) = mpsc::sync_channel(1024);
+    let spi = Box::new(ProbeSpi { tx });
+    let spi_ptr = Box::into_raw(spi) as *mut dyn MdSpi;
+    mdapi.register_spi(spi_ptr);
+    mdapi.register_front(FRONT);
+    mdapi.init();
+    println!("[MD] init -> {}", FRONT);
+
+    match rx.recv_timeout(Duration::from_secs(10)) {
+        Ok(Evt::Connected) => println!("[MD] OnFrontConnected"),
+        other => {
+            println!("[MD] 未连接: {:?}", other);
+            return;
+        }
+    }
+
+    println!("[MD] 发送 ReqUserLogin（不带认证），观察 ErrorID");
+    let mut req = CThostFtdcReqUserLoginField::default();
+    req.BrokerID.assign_from_str(BROKER);
+    req.UserID.assign_from_str(USER);
+    req.Password.assign_from_str(PASSWORD);
+    let ret = mdapi.req_user_login(&mut req, 1);
+    println!("[MD] req_user_login ret={}", ret);
+
+    match rx.recv_timeout(Duration::from_secs(10)) {
+        Ok(Evt::Login(info)) => match info {
+            None => println!("[MD] 结论: OnRspUserLogin 成功 ErrorID=0 -> 行情前置不需要认证"),
+            Some(e) => {
+                println!(
+                    "[MD] 结论: OnRspUserLogin ErrorID={} ErrorMsg={}",
+                    e.ErrorID,
+                    e.ErrorMsg.to_string()
+                );
+                if e.ErrorID == 63 {
+                    println!(
+                        "[MD] -> 需要 ReqAuthenticate。ctp2rs 0.1.9 行情侧无此接口，下一步换方案"
+                    );
+                    return;
+                }
+                if e.ErrorID != 0 {
+                    return;
+                }
+                println!("[MD] ErrorID=0，继续订阅");
+            }
+        },
+        Ok(other) => {
+            println!("[MD] 未收到登录回报: {:?}", other);
+            return;
+        }
+        Err(_) => {
+            println!("[MD] 等登录回报超时");
+            return;
+        }
+    }
+
+    println!("[MD] 订阅 {}", instrument);
+    let ret = mdapi.subscribe_market_data(std::slice::from_ref(&instrument));
+    println!("[MD] subscribe ret={}", ret);
+
+    let deadline = std::time::Instant::now() + Duration::from_secs(30);
+    let mut tick_count = 0u32;
+    while std::time::Instant::now() < deadline {
+        match rx.recv_timeout(Duration::from_millis(500)) {
+            Ok(Evt::SubRsp(info, code)) => {
+                if let Some(e) = info {
+                    println!("[SUB] {} ErrorID={}", code, e.ErrorID);
+                } else {
+                    println!("[SUB] {} OK", code);
+                }
+            }
+            Ok(Evt::Tick(code, last, bid, ask)) => {
+                tick_count += 1;
+                if tick_count <= 3 || tick_count.is_multiple_of(20) {
+                    println!("[TICK] {} last={} bid={} ask={}", code, last, bid, ask);
+                }
+            }
+            Ok(Evt::Disconnected(r)) => {
+                println!("[MD] Disconnected reason={}", r);
+                break;
+            }
+            _ => {}
+        }
+    }
+    println!("[MD] 30 秒内收到 {} 条 tick", tick_count);
+    mdapi.join();
+}

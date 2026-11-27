@@ -1,0 +1,65 @@
+//! 今晚跑：连 1 个行情前置，认证探测，打印返回码。
+//! 用法：cargo run -p app --bin md_probe -- <ip> <md_port> <app_id> <auth_code>
+
+use std::sync::Arc;
+use std::time::Duration;
+use crossbeam_channel::unbounded;
+use market_data::adapter::{MdAdapter, MdEvent};
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() < 5 {
+        eprintln!("用法: md_probe <ip> <md_port> <app_id> <auth_code>");
+        std::process::exit(2);
+    }
+    let ip = &args[1];
+    let port = &args[2];
+    let app_id = &args[3];
+    let auth_code = &args[4];
+    let front = format!("tcp://{}:{}", ip, port);
+
+    let api: Arc<dyn MdAdapter> = market_data::ctp2rs_backend::Ctp2rsMdAdapter::new("./data/flow/md");
+    let (tx, rx) = unbounded();
+    api.register_spi(tx.clone());
+    api.register_front(&front);
+    api.init();
+
+    println!("[PROBE] 已连接 {}，等待回调...", front);
+    let deadline = std::time::Instant::now() + Duration::from_secs(30);
+    let mut connected = false;
+    let mut sent_auth = false;
+    while std::time::Instant::now() < deadline {
+        match rx.recv_timeout(Duration::from_millis(200)) {
+            Ok(MdEvent::FrontConnected) => {
+                println!("[PROBE] OnFrontConnected");
+                connected = true;
+            }
+            Ok(MdEvent::Authenticated { error_id, error_msg }) => {
+                println!("[PROBE] OnRspAuthenticate ErrorID={} ErrorMsg={}", error_id, error_msg);
+                println!("[PROBE] 结论: {}", if error_id == 0 {
+                    "认证成功，行情需要 ReqAuthenticate（认证请求）"
+                } else if error_id == 63 {
+                    "认证失败 ErrorID=63，需要认证但 AppID/AuthCode（认证码）不对"
+                } else {
+                    "认证返回非 0，记录返回码"
+                });
+                api.release();
+                return;
+            }
+            Ok(MdEvent::RspError { error_id, error_msg }) => {
+                println!("[PROBE] RspError ErrorID={} {}", error_id, error_msg);
+            }
+            Ok(_) => {}
+            Err(_) => {}
+        }
+        if connected && !sent_auth {
+            // 连接后等 1 秒再发认证，避免前置未就绪
+            std::thread::sleep(Duration::from_millis(1000));
+            println!("[PROBE] 发送 ReqAuthenticate（认证请求）");
+            api.req_authenticate(app_id, auth_code);
+            sent_auth = true;
+        }
+    }
+    println!("[PROBE] 30 秒内未收到认证回调，可能非交易时段前置不响应。明天开盘重测。");
+    api.release();
+}

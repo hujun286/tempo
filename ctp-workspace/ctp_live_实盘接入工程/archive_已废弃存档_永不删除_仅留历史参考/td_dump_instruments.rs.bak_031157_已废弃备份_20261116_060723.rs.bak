@@ -1,0 +1,417 @@
+//! 用交易接口 ReqQryInstrument（查询合约请求）拉全量合约清单，落盘。
+//!
+//! 用途：
+//!   行情进程需要全量合约清单来分片。CTP 的 MdApi（行情接口）没有查询合约的能力，
+//!   只有 TraderApi（交易接口）有，所以必须先用交易进程查一次，落成文件，
+//!   行情进程再读这个文件做分片。
+//!
+//! 运行方式：
+//!   sudo ./td_dump_instruments [secrets.toml 路径]
+//!   sudo 是必须的：交易登录会触发看穿式采集，采集库要读 /dev/mem（物理内存设备文件），
+//!   当前用户不在 kmem 组，必须 sudo 才能通过认证。
+//!
+//! 敏感信息：
+//!   本文件不含任何 IP、账户、密码、认证码。所有参数从 config/secrets.toml 读。
+//!   secrets.toml 已被 .gitignore 忽略，不会进 git。
+
+use std::path::{Path, PathBuf};
+use std::sync::mpsc;
+use std::time::Duration;
+
+use ctp2rs::ffi::{AssignFromString, WrapToString};
+use ctp2rs::v1alpha1::*;
+use serde::Deserialize;
+
+// ============================================================
+// 常量：只放路径，不含敏感信息
+// ============================================================
+
+/// secrets.toml 默认路径。可以用命令行第一个参数覆盖。
+const DEFAULT_SECRETS_PATH: &str = "/home/xx/projects/ctp-workspace/config/secrets.toml";
+
+/// 工作区根目录。secrets.toml 里的相对路径（flow_dir、contracts_file）以它为基准拼接。
+const WORKSPACE_ROOT: &str = "/home/xx/projects/ctp-workspace";
+
+/// 交易动态库相对本工程根目录的路径。
+/// libthosttraderapi_se.so 是上期技术交易 API 的 Linux 64 位动态库。
+const TD_DYNLIB_REL: &str = "lib/libthosttraderapi_se.so";
+
+// ============================================================
+// 配置结构：对应 secrets.toml 的字段
+// serde 默认忽略未声明的字段，所以 [trading.hard_limits] 不写这里也不会报错。
+// ============================================================
+
+/// secrets.toml 顶层结构
+#[derive(Debug, Deserialize)]
+struct Secrets {
+    /// [market_data] 段：行情相关网络参数
+    market_data: MarketData,
+    /// [trading] 段：交易账户和前置参数
+    trading: Trading,
+}
+
+/// [market_data] 段
+#[derive(Debug, Deserialize)]
+struct MarketData {
+    /// 行情前置端口，本轮 61213
+    md_port: u16,
+    /// 交易前置端口，本轮 61205
+    td_port: u16,
+    /// 保留给交易的 IP，从 member_ips 里单独留出
+    trade_reserved_ip: String,
+    /// 行情 member 的 IP 列表，长度即 member 数
+    member_ips: Vec<String>,
+    /// 行情会话流文件目录（相对工作区根）
+    flow_dir: String,
+    /// 合约清单落盘路径（相对工作区根）
+    contracts_file: String,
+}
+
+/// [trading] 段
+#[derive(Debug, Deserialize)]
+struct Trading {
+    broker_id: String,
+    user_id: String,
+    password: String,
+    app_id: String,
+    auth_code: String,
+    /// 交易主前置 IP，端口由 market_data.td_port 拼
+    primary_front_ip: String,
+    /// 交易会话流文件目录（相对工作区根）
+    flow_dir: String,
+    /// 登录后是否自动做结算确认。实盘每天必须做一次，否则报单 ErrorID=42
+    settlement_confirm_on_login: bool,
+}
+
+// ============================================================
+// 事件：SPI 回调通过 mpsc 通道送回主线程
+// ============================================================
+
+/// 从 CThostFtdcRspInfoField 提取 (ErrorID, ErrorMsg)。
+/// CTP 的成功回调也可能带 rsp_info，ErrorID=0 表示成功。
+fn info_pair(i: Option<&CThostFtdcRspInfoField>) -> Option<(i32, String)> {
+    i.map(|x| (x.ErrorID, x.ErrorMsg.to_string()))
+}
+
+/// 合约记录：从 CThostFtdcInstrumentField 里挑出分片需要的字段
+#[derive(Debug, Clone)]
+struct Rec {
+    /// 合约代码，如 pp2701、cu2612P100000
+    id: String,
+    /// 交易所代码，如 SHFE、DCE、CZCE
+    ex: String,
+    /// 品种代码，如 pp、cu
+    prod: String,
+    /// 期权类型。CTP 用 i8 表示，0=非期权，1=看涨，2=看跌
+    opt_type: i32,
+    /// 产品类型。1=期货，2=期权
+    prod_class: i32,
+    /// 合约乘数，ETF 期权通常 10000，商品期权以实际为准
+    mult: i32,
+    /// 到期日，YYYYMMDD
+    expire: String,
+}
+
+/// 主线程收到的所有事件
+#[derive(Debug)]
+enum Evt {
+    Connected,
+    Auth(Option<(i32, String)>),
+    Login(Option<(i32, String)>),
+    Settle(Option<(i32, String)>),
+    /// 一条合约记录 + 是否本批最后一条
+    Instrument(Option<Rec>, bool),
+}
+
+// ============================================================
+// SPI 实现：所有回调只做“转成事件发回主线程”，不做业务逻辑
+// 这是 CTP 回调线程的硬规则：回调里不能阻塞、不能计算、不能写盘。
+// ============================================================
+
+struct Spi {
+    tx: mpsc::SyncSender<Evt>,
+}
+
+impl TraderSpi for Spi {
+    fn on_front_connected(&mut self) {
+        let _ = self.tx.send(Evt::Connected);
+    }
+
+    fn on_front_disconnected(&mut self, reason: i32) {
+        eprintln!("[TD] 前置断开 reason={}", reason);
+    }
+
+    fn on_rsp_authenticate(
+        &mut self,
+        _rsp: Option<&CThostFtdcRspAuthenticateField>,
+        rsp_info: Option<&CThostFtdcRspInfoField>,
+        _req: i32,
+        _last: bool,
+    ) {
+        let _ = self.tx.send(Evt::Auth(info_pair(rsp_info)));
+    }
+
+    fn on_rsp_user_login(
+        &mut self,
+        _rsp: Option<&CThostFtdcRspUserLoginField>,
+        rsp_info: Option<&CThostFtdcRspInfoField>,
+        _req: i32,
+        _last: bool,
+    ) {
+        let _ = self.tx.send(Evt::Login(info_pair(rsp_info)));
+    }
+
+    fn on_rsp_settlement_info_confirm(
+        &mut self,
+        _rsp: Option<&CThostFtdcSettlementInfoConfirmField>,
+        rsp_info: Option<&CThostFtdcRspInfoField>,
+        _req: i32,
+        _last: bool,
+    ) {
+        let _ = self.tx.send(Evt::Settle(info_pair(rsp_info)));
+    }
+
+    fn on_rsp_qry_instrument(
+        &mut self,
+        p_instrument: Option<&CThostFtdcInstrumentField>,
+        _rsp_info: Option<&CThostFtdcRspInfoField>,
+        _req: i32,
+        b_is_last: bool,
+    ) {
+        let rec = p_instrument.map(|i| Rec {
+            id: i.InstrumentID.to_string(),
+            ex: i.ExchangeID.to_string(),
+            prod: i.ProductID.to_string(),
+            opt_type: i.OptionsType as i32,
+            prod_class: i.ProductClass as i32,
+            mult: i.VolumeMultiple,
+            expire: i.ExpireDate.to_string(),
+        });
+        let _ = self.tx.send(Evt::Instrument(rec, b_is_last));
+    }
+
+    fn on_rsp_error(
+        &mut self,
+        p_rsp_info: Option<&CThostFtdcRspInfoField>,
+        req: i32,
+        _last: bool,
+    ) {
+        if let Some(e) = p_rsp_info {
+            eprintln!(
+                "[RSP ERROR] request_id={} ErrorID={} ErrorMsg={}",
+                req,
+                e.ErrorID,
+                e.ErrorMsg.to_string()
+            );
+        }
+    }
+}
+
+// ============================================================
+// 工具函数
+// ============================================================
+
+/// 等待某个事件，带超时。
+fn wait(rx: &mpsc::Receiver<Evt>, timeout: Duration) -> Option<Evt> {
+    rx.recv_timeout(timeout).ok()
+}
+
+/// 把 secrets.toml 里的相对路径拼到工作区根目录下。
+/// 如果已经是绝对路径，原样返回。
+fn resolve_workspace_path(rel: &str) -> PathBuf {
+    let p = Path::new(rel);
+    if p.is_absolute() {
+        p.to_path_buf()
+    } else {
+        Path::new(WORKSPACE_ROOT).join(rel)
+    }
+}
+
+// ============================================================
+// 主流程
+// ============================================================
+
+fn main() {
+    // ---- 1. 读取配置 ----
+    let secrets_path = std::env::args()
+        .nth(1)
+        .unwrap_or_else(|| DEFAULT_SECRETS_PATH.to_string());
+
+    let text = std::fs::read_to_string(&secrets_path).unwrap_or_else(|e| {
+        eprintln!("[CFG] 读取 {} 失败: {}", secrets_path, e);
+        std::process::exit(1);
+    });
+    let cfg: Secrets = toml::from_str(&text).unwrap_or_else(|e| {
+        eprintln!("[CFG] 解析 {} 失败: {}", secrets_path, e);
+        std::process::exit(1);
+    });
+    println!("[CFG] 已加载 {}", secrets_path);
+    println!(
+        "[CFG] 交易前置 {}:{}, 账户 {}",
+        cfg.trading.primary_front_ip, cfg.market_data.td_port, cfg.trading.user_id
+    );
+
+    // ---- 2. 准备目录 ----
+    let flow_dir = resolve_workspace_path(&cfg.trading.flow_dir);
+    std::fs::create_dir_all(&flow_dir).ok();
+    let out_file = resolve_workspace_path(&cfg.market_data.contracts_file);
+    if let Some(parent) = out_file.parent() {
+        std::fs::create_dir_all(parent).ok();
+    }
+    println!("[CFG] 会话流目录 {}", flow_dir.display());
+    println!("[CFG] 输出文件 {}", out_file.display());
+
+    // ---- 3. 动态库路径 ----
+    // 用 CARGO_MANIFEST_DIR 取本工程根目录，再拼 lib/libthosttraderapi_se.so
+    let base = std::env::var("CARGO_MANIFEST_DIR")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| std::env::current_dir().unwrap());
+    let dynlib = base.join(TD_DYNLIB_REL);
+    if !dynlib.exists() {
+        eprintln!("[CFG] 动态库不存在: {}", dynlib.display());
+        std::process::exit(1);
+    }
+    println!("[CFG] 交易动态库 {}", dynlib.display());
+
+    // ---- 4. 创建 TraderApi ----
+    // flow_path 是会话流文件目录，CTP 会在里面生成 .con 文件。
+    // 行情和交易的 flow_dir 必须分开，否则 .con 文件冲突。
+    let api = TraderApiBuilder::new()
+        .with_dynlib(dynlib.to_str().unwrap())
+        .flow_path(flow_dir.to_str().unwrap())
+        .build()
+        .unwrap_or_else(|e| {
+            eprintln!("[TD] 创建 TraderApi 失败: {}", e);
+            std::process::exit(1);
+        });
+
+    let (tx, rx) = mpsc::sync_channel(4096);
+    let spi = Box::new(Spi { tx });
+    let spi_ptr = Box::into_raw(spi) as *mut dyn TraderSpi;
+    api.register_spi(spi_ptr);
+
+    let front = format!("tcp://{}:{}", cfg.trading.primary_front_ip, cfg.market_data.td_port);
+    api.register_front(&front);
+    api.init();
+    println!("[TD] init -> {}", front);
+
+    // ---- 5. 等连接 ----
+    match wait(&rx, Duration::from_secs(10)) {
+        Some(Evt::Connected) => println!("[TD] OnFrontConnected"),
+        other => {
+            eprintln!("[TD] 未连接: {:?}", other);
+            std::process::exit(1);
+        }
+    }
+
+    // ---- 6. 认证 ----
+    let mut auth = CThostFtdcReqAuthenticateField::default();
+    auth.BrokerID.assign_from_str(&cfg.trading.broker_id);
+    auth.UserID.assign_from_str(&cfg.trading.user_id);
+    auth.AppID.assign_from_str(&cfg.trading.app_id);
+    auth.AuthCode.assign_from_str(&cfg.trading.auth_code);
+    let ret = api.req_authenticate(&mut auth, 1);
+    println!("[TD] req_authenticate ret={}", ret);
+    match wait(&rx, Duration::from_secs(10)) {
+        Some(Evt::Auth(None)) => println!("[TD] 认证成功"),
+        Some(Evt::Auth(Some((id, m)))) => {
+            eprintln!("[TD] 认证失败 {} {}", id, m);
+            std::process::exit(1);
+        }
+        other => {
+            eprintln!("[TD] 认证无回调 {:?}", other);
+            std::process::exit(1);
+        }
+    }
+
+    // ---- 7. 登录 ----
+    let mut login = CThostFtdcReqUserLoginField::default();
+    login.BrokerID.assign_from_str(&cfg.trading.broker_id);
+    login.UserID.assign_from_str(&cfg.trading.user_id);
+    login.Password.assign_from_str(&cfg.trading.password);
+    let ret = api.req_user_login(&mut login, 2);
+    println!("[TD] req_user_login ret={}", ret);
+    match wait(&rx, Duration::from_secs(15)) {
+        Some(Evt::Login(None)) => println!("[TD] 登录成功"),
+        Some(Evt::Login(Some((id, m)))) => {
+            eprintln!("[TD] 登录失败 {} {}", id, m);
+            std::process::exit(1);
+        }
+        other => {
+            eprintln!("[TD] 登录无回调 {:?}", other);
+            std::process::exit(1);
+        }
+    }
+
+    // ---- 8. 结算确认 ----
+    if cfg.trading.settlement_confirm_on_login {
+        let mut settle = CThostFtdcSettlementInfoConfirmField::default();
+        settle.BrokerID.assign_from_str(&cfg.trading.broker_id);
+        settle.InvestorID.assign_from_str(&cfg.trading.user_id);
+        let ret = api.req_settlement_info_confirm(&mut settle, 3);
+        println!("[TD] req_settlement_info_confirm ret={}", ret);
+        match wait(&rx, Duration::from_secs(10)) {
+            Some(Evt::Settle(None)) => println!("[TD] 结算确认成功"),
+            Some(Evt::Settle(Some((id, m)))) => {
+                eprintln!("[TD] 结算确认失败 {} {}", id, m);
+                std::process::exit(1);
+            }
+            other => {
+                eprintln!("[TD] 结算确认无回调 {:?}", other);
+                std::process::exit(1);
+            }
+        }
+    }
+
+    // ---- 9. 查询全量合约 ----
+    // CThostFtdcQryInstrumentField 全空表示查全部合约，不分交易所、不分品种。
+    let mut q = CThostFtdcQryInstrumentField::default();
+    let ret = api.req_qry_instrument(&mut q, 4);
+    println!("[TD] req_qry_instrument ret={}", ret);
+
+    let mut all: Vec<Rec> = Vec::new();
+    let mut last_log = std::time::Instant::now();
+    loop {
+        match rx.recv_timeout(Duration::from_secs(30)) {
+            Ok(Evt::Instrument(Some(rec), is_last)) => {
+                all.push(rec);
+                if is_last {
+                    break;
+                }
+            }
+            Ok(Evt::Instrument(None, true)) => break,
+            Ok(Evt::Instrument(None, false)) => continue,
+            Ok(_) => continue,
+            Err(_) => {
+                eprintln!("[TD] 查询超时，已收 {} 条", all.len());
+                break;
+            }
+        }
+        // 每 2 秒打一次进度，避免刷屏
+        if last_log.elapsed() > Duration::from_secs(2) {
+            println!("[TD] 已收 {} 条", all.len());
+            last_log = std::time::Instant::now();
+        }
+    }
+    println!("[TD] 查询完成，共 {} 条", all.len());
+
+    // ---- 10. 落盘 ----
+    // 文件格式：CSV，首行注释说明字段。
+    // 行情进程读这个文件做分片，按 ExchangeID 分给不同 member。
+    let mut out = String::new();
+    out.push_str("# InstrumentID,ExchangeID,ProductID,OptionsType,ProductClass,VolumeMultiple,ExpireDate\n");
+    for r in &all {
+        out.push_str(&format!(
+            "{},{},{},{},{},{},{}\n",
+            r.id, r.ex, r.prod, r.opt_type, r.prod_class, r.mult, r.expire
+        ));
+    }
+    match std::fs::write(&out_file, out) {
+        Ok(_) => println!("[TD] 写入 {}", out_file.display()),
+        Err(e) => eprintln!("[TD] 写文件失败: {}", e),
+    }
+
+    // CTP 后台线程不会自己退出，join 会一直阻塞。
+    // 写完文件直接 exit，不做 join。
+    std::process::exit(0);
+}

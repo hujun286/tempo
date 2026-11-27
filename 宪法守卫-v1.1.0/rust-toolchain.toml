@@ -1,0 +1,5 @@
+[toolchain]
+# 守卫自身固定 stable（执法者要绝对可靠）
+# 编译安装.sh 会把 channel 替换为安装时的具体版本号（如 "1.100.0"），锁死不动
+channel = "stable"
+components = ["clippy", "rustfmt"]

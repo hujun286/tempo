@@ -1,0 +1,5 @@
+# 本工程 cargo 配置。不放代理，不放私密镜像源。
+# 代理由使用者自己环境决定，不写进项目。
+[net]
+retry = 3
+git-fetch-with-cli = true

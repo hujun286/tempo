@@ -1,0 +1,267 @@
+🛡️  [宪法守卫] 已激活 - 2026 终极现代化模式
+   ├─ 当前工作目录: /home/xx/projects/ctp-workspace/行情数据采集
+   ├─ 检测到项目: 行情数据采集
+   ├─ 提示: 未找到 rust-toolchain.toml，建议创建以锁定编译器版本
+   ├─ 检测到 4 个中文命名的源文件，符合本地化规范
+   ├─ 状态: 配置缓存命中，跳过冗余初始化
+   ├─ 提示: 未检测到 VSCode 配置，建议创建 .vscode/settings.json 以启用IDE宪法支持
+   └─ 动作: 拦截编译，前置执行宪法审查...
+    Checking market_data_collector v0.1.0 (/home/xx/projects/ctp-workspace/行情数据采集)
+error[E0433]: cannot find module or crate `rust_ctp_test` in this scope
+  --> src/main.rs:51:5
+   |
+51 | use rust_ctp_test::config::{Secrets, WORKSPACE_ROOT};
+   |     ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `rust_ctp_test`
+   |
+   = help: if you wanted to use a crate named `rust_ctp_test`, use `cargo add rust_ctp_test` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `rust_ctp_test` in this scope
+ --> src/config.rs:2:5
+  |
+2 | use rust_ctp_test::config::WORKSPACE_ROOT;
+  |     ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `rust_ctp_test`
+  |
+  = help: if you wanted to use a crate named `rust_ctp_test`, use `cargo add rust_ctp_test` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `arrow` in this scope
+   --> src/merge.rs:290:9
+    |
+290 |     use arrow::array::{
+    |         ^^^^^ use of unresolved module or unlinked crate `arrow`
+    |
+    = help: if you wanted to use a crate named `arrow`, use `cargo add arrow` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `arrow` in this scope
+   --> src/merge.rs:294:9
+    |
+294 |     use arrow::datatypes::{DataType, Field, Schema, TimeUnit};
+    |         ^^^^^ use of unresolved module or unlinked crate `arrow`
+    |
+    = help: if you wanted to use a crate named `arrow`, use `cargo add arrow` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `parquet` in this scope
+   --> src/merge.rs:295:9
+    |
+295 |     use parquet::arrow::ArrowWriter;
+    |         ^^^^^^^ use of unresolved module or unlinked crate `parquet`
+    |
+    = help: if you wanted to use a crate named `parquet`, use `cargo add parquet` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `parquet` in this scope
+   --> src/merge.rs:296:9
+    |
+296 |     use parquet::file::properties::WriterProperties;
+    |         ^^^^^^^ use of unresolved module or unlinked crate `parquet`
+    |
+    = help: if you wanted to use a crate named `parquet`, use `cargo add parquet` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `chrono`
+  --> src/main.rs:50:5
+   |
+50 | use chrono::Local;
+   |     ^^^^^^ use of unresolved module or unlinked crate `chrono`
+   |
+   = help: if you wanted to use a crate named `chrono`, use `cargo add chrono` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `chrono`
+ --> src/aggregate.rs:4:5
+  |
+4 | use chrono::{Local, LocalResult, TimeZone};
+  |     ^^^^^^ use of unresolved module or unlinked crate `chrono`
+  |
+  = help: if you wanted to use a crate named `chrono`, use `cargo add chrono` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `serde`
+ --> src/aggregate.rs:5:5
+  |
+5 | use serde::{Deserialize, Serialize};
+  |     ^^^^^ use of unresolved module or unlinked crate `serde`
+  |
+  = help: if you wanted to use a crate named `serde`, use `cargo add serde` to add it to your `Cargo.toml`
+
+error: cannot find attribute `serde` in this scope
+  --> src/aggregate.rs:34:7
+   |
+34 |     #[serde(default)]
+   |       ^^^^^
+
+error: cannot find attribute `serde` in this scope
+  --> src/aggregate.rs:36:7
+   |
+36 |     #[serde(default)]
+   |       ^^^^^
+
+error[E0433]: cannot find module or crate `zstd` in this scope
+  --> src/merge.rs:53:18
+   |
+53 |         let 解开 = zstd::stream::decode_all(&压缩数据[..])?;
+   |                    ^^^^ use of unresolved module or unlinked crate `zstd`
+   |
+help: there is a crate or module with a similar name
+   |
+53 -         let 解开 = zstd::stream::decode_all(&压缩数据[..])?;
+53 +         let 解开 = std::stream::decode_all(&压缩数据[..])?;
+   |
+
+error[E0433]: cannot find module or crate `zstd` in this scope
+   --> src/merge.rs:202:22
+    |
+202 |         let Ok(压缩) = zstd::stream::encode_all(&原[..], 10) else {
+    |                        ^^^^ use of unresolved module or unlinked crate `zstd`
+    |
+help: there is a crate or module with a similar name
+    |
+202 -         let Ok(压缩) = zstd::stream::encode_all(&原[..], 10) else {
+202 +         let Ok(压缩) = std::stream::encode_all(&原[..], 10) else {
+    |
+
+error[E0433]: cannot find module or crate `parquet` in this scope
+   --> src/merge.rs:358:30
+    |
+358 |             .set_compression(parquet::basic::Compression::ZSTD(Default::default()))
+    |                              ^^^^^^^ use of unresolved module or unlinked crate `parquet`
+    |
+    = help: if you wanted to use a crate named `parquet`, use `cargo add parquet` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `zstd` in this scope
+   --> src/merge.rs:552:18
+    |
+552 |         let 解开 = zstd::stream::decode_all(&原数据[..]).unwrap_or_default();
+    |                    ^^^^ use of unresolved module or unlinked crate `zstd`
+    |
+help: there is a crate or module with a similar name
+    |
+552 -         let 解开 = zstd::stream::decode_all(&原数据[..]).unwrap_or_default();
+552 +         let 解开 = std::stream::decode_all(&原数据[..]).unwrap_or_default();
+    |
+
+error[E0433]: cannot find `EnvFilter` in `tracing_subscriber`
+   --> src/main.rs:90:33
+    |
+ 90 |             tracing_subscriber::EnvFilter::try_from_default_env()
+    |                                 ^^^^^^^^^ could not find `EnvFilter` in `tracing_subscriber`
+    |
+note: found an item that was configured out
+   --> /home/xx/.cargo/registry/src/mirrors.ustc.edu.cn-38d0e5eb5da2abae/tracing-subscriber-0.3.23/src/lib.rs:239:21
+    |
+238 |     #![all(feature = "env-filter", feature = "std")]
+    |            ---------------------- the item is gated behind the `env-filter` feature
+239 |     pub use filter::EnvFilter;
+    |                     ^^^^^^^^^
+
+error[E0433]: cannot find `EnvFilter` in `tracing_subscriber`
+   --> src/main.rs:91:57
+    |
+ 91 |                 .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("info")),
+    |                                                         ^^^^^^^^^ could not find `EnvFilter` in `tracing_subscriber`
+    |
+note: found an item that was configured out
+   --> /home/xx/.cargo/registry/src/mirrors.ustc.edu.cn-38d0e5eb5da2abae/tracing-subscriber-0.3.23/src/lib.rs:239:21
+    |
+238 |     #![all(feature = "env-filter", feature = "std")]
+    |            ---------------------- the item is gated behind the `env-filter` feature
+239 |     pub use filter::EnvFilter;
+    |                     ^^^^^^^^^
+
+error[E0433]: cannot find module or crate `rust_ctp_test` in this scope
+   --> src/main.rs:166:28
+    |
+166 |         .unwrap_or_else(|| rust_ctp_test::config::DEFAULT_SECRETS.to_string());
+    |                            ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `rust_ctp_test`
+    |
+    = help: if you wanted to use a crate named `rust_ctp_test`, use `cargo add rust_ctp_test` to add it to your `Cargo.toml`
+
+error: binding's name is too similar to existing binding
+   --> src/session.rs:439:9
+    |
+439 |     let step = Duration::from_millis(100);
+    |         ^^^^
+    |
+note: existing binding defined here
+   --> src/session.rs:438:44
+    |
+438 | pub(crate) fn sleep_or_stop(dur: Duration, stop: &AtomicBool) {
+    |                                            ^^^^
+    = help: for further information visit https://clippy.rust-lang.org/main/index.html#similar_names
+    = note: `-D clippy::similar-names` implied by `-D clippy::pedantic`
+    = help: to override `-D clippy::pedantic` add `#[allow(clippy::similar_names)]`
+
+error[E0433]: cannot find module or crate `chrono` in this scope
+  --> src/aggregate.rs:73:13
+   |
+73 |             chrono::Utc
+   |             ^^^^^^ use of unresolved module or unlinked crate `chrono`
+   |
+   = help: if you wanted to use a crate named `chrono`, use `cargo add chrono` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `ctrlc` in this scope
+   --> src/main.rs:342:21
+    |
+342 |     if let Err(e) = ctrlc::set_handler(f) {
+    |                     ^^^^^ use of unresolved module or unlinked crate `ctrlc`
+    |
+    = help: if you wanted to use a crate named `ctrlc`, use `cargo add ctrlc` to add it to your `Cargo.toml`
+
+error[E0599]: no method named `with_env_filter` found for struct `tracing_subscriber::fmt::SubscriberBuilder<N, E, F, W>` in the current scope
+  --> src/main.rs:89:10
+   |
+88 |     tracing_subscriber::fmt()
+89 |         .with_env_filter(
+   |          ^^^^^^^^^^^^^^^
+   |
+help: there is a method `with_file` with a similar name
+   |
+89 -         .with_env_filter(
+89 +         .with_file(
+   |
+
+error[E0433]: cannot find module or crate `serde_json` in this scope
+  --> src/merge.rs:73:15
+   |
+73 |         match serde_json::from_str::<MinuteBar>(l) {
+   |               ^^^^^^^^^^ use of unresolved module or unlinked crate `serde_json`
+   |
+   = help: if you wanted to use a crate named `serde_json`, use `cargo add serde_json` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `toml` in this scope
+   --> src/main.rs:171:24
+    |
+171 |     let cfg: Secrets = toml::from_str(&text).unwrap_or_else(|e| {
+    |                        ^^^^ use of unresolved module or unlinked crate `toml`
+    |
+    = help: if you wanted to use a crate named `toml`, use `cargo add toml` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `serde_json` in this scope
+  --> src/writer.rs:72:19
+   |
+72 |             match serde_json::to_string(&bar) {
+   |                   ^^^^^^^^^^ use of unresolved module or unlinked crate `serde_json`
+   |
+   = help: if you wanted to use a crate named `serde_json`, use `cargo add serde_json` to add it to your `Cargo.toml`
+
+error[E0061]: this function takes 5 arguments but 4 arguments were supplied
+   --> src/session.rs:49:19
+    |
+ 49 |         let api = MdApi::create_api(&dynlib_s, &flow_s, false, false);
+    |                   ^^^^^^^^^^^^^^^^^---------------------------------- argument #5 of type `bool` is missing
+    |
+note: associated function defined here
+   --> /home/xx/.cargo/registry/src/mirrors.ustc.edu.cn-38d0e5eb5da2abae/ctp2rs-0.1.11-alpha1/src/v1alpha1/builder.rs:134:12
+    |
+ 86 | impl MdApi {
+...
+134 |     pub fn create_api<P: AsRef<Path>, F: AsRef<Path>>(
+    |            ^^^^^^^^^^
+help: provide the argument
+    |
+ 49 |         let api = MdApi::create_api(&dynlib_s, &flow_s, false, false, /* bool */);
+    |                                                                     ++++++++++++
+
+Some errors have detailed explanations: E0061, E0432, E0433, E0599.
+For more information about an error, try `rustc --explain E0061`.
+error: could not compile `market_data_collector` (bin "market_data_collector") due to 25 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `market_data_collector` (bin "market_data_collector" test) due to 26 previous errors
+
+🚫 [阻断] 代码违反宪法，编译终止。请修复上述所有违规项。
+   提示: 紧急情况下可设置 CONSTITUTION_OVERRIDE=1 绕过，但不推荐

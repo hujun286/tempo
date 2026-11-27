@@ -1,0 +1,17 @@
+[package]
+name = "cargo-constitutional-guard"
+version = "1.2.1"
+edition = "2024"
+description = "宪法守卫：全局接管 cargo，强制执行统一代码宪法（官方机制优先，零依赖）"
+license = "MIT"
+
+[[bin]]
+name = "宪法守卫"
+path = "main.rs"
+
+# 零依赖：供应链攻击面为零，离线可编译
+[dependencies]
+
+[profile.release]
+lto = true
+strip = true

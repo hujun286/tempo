@@ -1,0 +1,24 @@
+[package]
+name = "market_data_collector"
+version = "2.1.0" # 2.0=T5功能实装(同日合并去重/盘前重演过滤/双写开关) 20261126; 2.1=时戳偏离过滤+时区防呆+bar_time口径统一+守卫清零+依赖109 20261127
+edition = "2024"
+# ── cargo lint 元数据（宪法 -W clippy::cargo 要求齐全）──────────────
+description = "CTP 分钟K线实盘采集落盘：16-member 行情分片 + 方案B事件驱动重连 + 分片jsonl/13列Parquet"
+license = "MIT"
+repository = "https://gitee.com/zz237/zhipu"
+keywords = ["ctp", "futures", "kline", "market-data", "quant"]
+categories = ["finance", "command-line-utilities"]
+
+[dependencies]
+arrow-array = { version = "60.2.0", default-features = false } # 只用 array/RecordBatch 基础件
+arrow-schema = { version = "60.2.0", default-features = false } # 只用 DataType/Field/Schema；不用 arrow 元crate（会白拉 string/ord/cast/regex 整支）
+chrono = { version = "0.4.45", default-features = false, features = ["std", "clock"] } # 只用 Local::now/format，裁掉 icu/wasmbind/oldtime
+ctp2rs = { version = "=0.1.11-alpha1", default-features = false, features = ["v1alpha1", "ctp_v6_7_7"] } # 实机so(同v1.4)只导出2-bool版CreateFtdcMdApi，union版需3-bool会dlsym失败
+ctrlc = "3.5.3"
+parquet = { version = "60.2.0", features = ["snap", "zstd"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+toml = "1.2.3"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+zstd = "0.14.5"

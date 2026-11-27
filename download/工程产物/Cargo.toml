@@ -1,0 +1,115 @@
+#rust-version = "1.100"
+
+# ============================================================================
+# ★v1.5 Workspace 化（D030）：
+#   - [workspace.dependencies] 统一 15 个依赖版本（本包以 xxx.workspace = true 继承）
+#   - [workspace.lints.clippy] 四条硬门禁（unwrap/expect/print stdout/stderr = deny），
+#     包级 [lints] workspace=true 继承；与 main 头部 #![deny] 双保险
+#   - autobins=false + 显式 [[bin]] 清单（D036）：v2.rs 是未完成占位版（含 11 处
+#     `<...>` 类型占位），不参与编译与 fmt --check；哪天修好了再加回 [[bin]]
+# ============================================================================
+
+[workspace]
+members = ["."]
+resolver = "2"
+
+[workspace.dependencies]
+# CTP 动态绑定库，本地 path 依赖，避免联网拉 crates.io
+# v1alpha1 是当前稳定 API，ctp_v6_7_7 对应 7090 实盘的 CTP 6.7.7
+# ★v1.5（D023）：0.1.9 → 0.1.11-alpha1——Drop 悬垂修复（release 后不再触碰悬垂 ptr）
+#   正是方案B teardown→重建路径需要的安全修复；v1_4 零代码改动兼容（试编译实证）
+# 【上机注意】path 改回你的 vendor 路径（0.1.11-alpha1 解包目录）：
+#   path = "/home/xx/projects/ctp-workspace/vendor/ctp2rs-src/ctp2rs-ctp2rs-0.1.11-alpha1/ctp-dyn"
+ctp2rs = { path = "/home/z/my-project/vendor_ctp2rs/ctp2rs-0.1.11-alpha1", default-features = false, features = ["v1alpha1", "ctp_v6_7_7"] }
+
+tokio = { version = "1", features = ["full"] }
+arrow  = "58"
+parquet = "58"
+# ★v1.5（D027）chrono 评估结论：保留但裁剪 features。
+#   v1_4 实际用点仅 Local::now()/timestamp_millis_opt/format（bar 分钟对齐用本机墙钟——
+#   规避盘前重演污染，理由见决策日志 D027）；交易所时间已在 TradingDay/UpdateTime 里。
+#   default-features=false 裁掉旧 time 库/完整解析器，只留 clock+std+alloc。
+chrono = { version = "0.4.38", default-features = false, features = ["clock", "std", "alloc"] }
+
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing = "0.1"
+ctrlc  = "3"
+# GB18030 解码，CTP 中文错误信息需要
+encoding_rs = "0.8"
+# 配置读取：serde 反序列化，toml 解析 TOML 文件
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+anyhow = "1"
+h5i-db-core = "0.1.6"
+# ★v1.5（D028）jsonl 归档压缩：合并成功后历史分片压成 .jsonl.zst（level 10，实测压到 ~5%）
+zstd = "0.13"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+
+[package]
+name = "rust_ctp_test"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100"
+license = "MIT"
+authors = ["Placeholder Author <placeholder@example.com>"]
+
+# D036：显式 bin 清单。8 个 bin 全部试编通过；v2.rs 不编（占位版语法错误会拖死全 crate 的 fmt/clippy）
+autobins = false
+
+[[bin]]
+name = "分钟k线落盘_v1_4"
+path = "src/bin/分钟k线落盘_v1_4/main.rs"
+
+[[bin]]
+name = "分钟k线落盘_v1_3"
+path = "src/bin/分钟k线落盘_v1_3.rs"
+
+[[bin]]
+name = "分钟k线落盘_完整版"
+path = "src/bin/分钟k线落盘_完整版.rs"
+
+[[bin]]
+name = "md_pool"
+path = "src/bin/md_pool.rs"
+
+[[bin]]
+name = "market_data_one_contract_tick_probe"
+path = "src/bin/market_data_one_contract_tick_probe.rs"
+
+[[bin]]
+name = "td_dump_instruments"
+path = "src/bin/td_dump_instruments.rs"
+
+[[bin]]
+name = "h5i-db数据库查询"
+path = "src/bin/h5i-db数据库查询.rs"
+
+[[bin]]
+name = "分钟k线落盘"
+path = "src/bin/分钟k线落盘.rs"
+
+[dependencies]
+ctp2rs.workspace = true
+tokio.workspace = true
+arrow.workspace = true
+parquet.workspace = true
+chrono.workspace = true
+tracing-subscriber.workspace = true
+tracing.workspace = true
+ctrlc.workspace = true
+encoding_rs.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+anyhow.workspace = true
+h5i-db-core.workspace = true
+zstd.workspace = true
+
+[lints]
+workspace = true

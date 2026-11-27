@@ -1,0 +1,19 @@
+# clippy 配置（仓库根目录）
+# 注意：本文件的 disallowed-methods 只有在我们启用了这条 lint 时才会生效：
+#   - crate 根：`#![deny(clippy::disallowed_methods)]`
+#   - 命令行：`-D clippy::disallowed_methods`（Makefile 的 clippy 目标、CI 里都已加上）
+# 只写 clippy.toml 而不启用 lint，等于没写。
+
+msrv = "1.100"
+
+# 与《安全编码规范》第 3 节黑名单对应：命中即报错。
+# 这份清单是"机器能认出来的那一部分"，正则兜底见规范 8.4 节。
+disallowed-methods = [
+    { path = "std::string::String::truncate", reason = "char boundary 处会 panic，先确认边界或改用 drain(range)" },
+    { path = "std::string::String::insert", reason = "char boundary 会 panic" },
+    { path = "std::string::String::remove", reason = "char boundary 会 panic" },
+    { path = "std::vec::Vec::remove", reason = "越界 panic，先校验索引或改用 swap_remove" },
+    { path = "std::vec::Vec::insert", reason = "越界 panic，先校验索引" },
+    { path = "std::vec::Vec::drain", reason = "越界 panic，先校验范围" },
+    { path = "std::time::Duration::from_secs_f64", reason = "非整数/越界 panic，改用 try_from_secs_f64" },
+]

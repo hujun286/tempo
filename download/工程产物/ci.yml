@@ -1,0 +1,54 @@
+# ============================================================================
+# CI（D030）：两个 job —— 门禁三件套 + 依赖治理。
+# 【没有 CI 平台也完全同效】本地等价命令：just ci && just 关卡 && just deny && just 冷却
+# ============================================================================
+
+name: 分钟K线门禁
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  门禁:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt, clippy
+      - name: 缓存 cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+      - name: build
+        run: cargo build --bin 分钟k线落盘_v1_4
+      - name: fmt-check
+        run: cargo fmt --check
+      - name: clippy（-D warnings）
+        run: cargo clippy --bin 分钟k线落盘_v1_4 -- -D warnings
+      - name: test
+        run: cargo test --bin 分钟k线落盘_v1_4
+
+  依赖治理:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: 安装 cargo-deny（binstall 优先，失败 cargo install）
+        run: |
+          cargo binstall cargo-deny --no-confirm || cargo install cargo-deny --locked
+      - name: deny check
+        run: cargo deny check
+      - name: 7 天依赖冷却
+        run: |
+          cargo binstall rust-script --no-confirm || cargo install rust-script --locked
+          rust-script scripts/检查依赖冷却.rs
+      - name: 危险代码检查
+        run: |
+          rustc -O scripts/检查危险代码.rs -o 检查危险代码
+          ./检查危险代码 src/bin/分钟k线落盘_v1_4/

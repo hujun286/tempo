@@ -1,0 +1,13 @@
+# 沙盒专用 cargo 配置：crates.io 走 rsproxy 镜像（直连慢，实测 2026-11-25）
+# 注意：这只作用于本沙盒，用户机器上的 ~/.cargo/config.toml（7天冷却期等）不受影响。
+[source.crates-io]
+replace-with = 'rsproxy-sparse'
+
+[source.rsproxy-sparse]
+registry = "sparse+https://rsproxy.cn/index/"
+
+[registries.rsproxy]
+index = "sparse+https://rsproxy.cn/index/"
+
+[net]
+git-fetch-with-cli = true

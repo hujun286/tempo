@@ -1,0 +1,15 @@
+# 宪法守卫 · 全局淘汰清单
+# 机制：clippy 官方 disallowed-macros / disallowed-methods
+# 安装位置：~/.cargo/constitutional-guard/clippy.toml（守卫经 CLIPPY_CONF_DIR 注入）
+# 项目根自带 clippy.toml 时，以项目为准（守卫自动让位）。
+# 增删条目无需重装守卫，下次编译即生效。
+# 想禁任何方法/宏/类型，往这里加就行——不用自己写 lint。
+
+disallowed-macros = [
+  { path = "lazy_static::lazy_static", reason = "淘汰：改用 std::sync::LazyLock（标准库，无需依赖）" },
+]
+
+disallowed-methods = [
+  { path = "std::sync::Once::new", reason = "淘汰：改用 std::sync::OnceLock::new（1.70+，可携带值）" },
+  { path = "std::hint::unreachable_unchecked", reason = "立即未定义行为：改用 unreachable!()（可 panic 的安全版本）" },
+]

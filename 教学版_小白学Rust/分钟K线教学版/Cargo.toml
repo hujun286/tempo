@@ -1,0 +1,49 @@
+# ══════════════════════════════════════════════════════════════════════
+# 【教学版说明：写给小白的第零课——Cargo.toml 是什么】
+#
+# Cargo.toml 是 Rust 工程的「身份证 + 购物清单」，TomL 格式（一种写起来像
+# ini 的纯文本配置格式）。编译器 cargo 在开工前必先读它，它回答三个问题：
+#   1）这个工程叫什么、什么版本（[package] 段）；
+#   2）要用哪些别人写好的库（[dependencies] 段，每个库叫一个 crate）；
+#   3）用哪套语法规则来编译（edition 字段，相当于「字典版本」）。
+#
+# 本文件直接复制自主工程（v2.1.0，2026-11-27），只改了版本号并加教学注释，
+# 依赖与编译行为与主工程完全一致——教学版不改代码，只加注释。
+#
+# 小白动手练习：把 version 随手改成别的字符串再 cargo build，观察 cargo
+# 是否报错（提示：版本号有三段数字的约定，改成 "a.b.c" 之外的写法会被拒）。
+# ══════════════════════════════════════════════════════════════════════
+
+[package]
+name = "market_data_collector" # 工程名（也是编译产出的二进制名，cargo build 后在 target/debug/ 里能找到它）
+version = "1.0.0-jiaoxue" # 教学版版本号（「教学」的拼音：Cargo 的 semver 只认 ASCII 后缀，中文「-教学」会导致编译报错 empty identifier segment，故退而用拼音并在此注释说明）。
+                       # 基于主工程 v2.1.0（2.0=T5功能实装(同日合并去重/盘前重演过滤/双写开关) 20261126；2.1=时戳偏离过滤+时区防呆+bar_time口径统一+守卫清零+依赖109 20261127）。
+                       # 语义化版本（semver）惯例是「主.次.修订」三段纯数字，加「-jiaoxue」后缀表示预发布/特殊标签。
+edition = "2024" # Rust 版本纪元（edition）：相当于「语法字典的第几版」。2024 是最新一版，允许 let 链、更严格的借用规则等；老代码换新纪元一般能直接编译，但会有少量语法差异。
+# ── cargo lint 元数据（宪法 -W clippy::cargo 要求齐全）──────────────
+description = "CTP 分钟K线实盘采集落盘：16-member 行情分片 + 方案B事件驱动重连 + 分片jsonl/13列Parquet"
+license = "MIT"
+repository = "https://gitee.com/zz237/zhipu"
+keywords = ["ctp", "futures", "kline", "market-data", "quant"]
+categories = ["finance", "command-line-utilities"]
+
+# ── 依赖清单（写给小白：每一行 = 一个别人写好的库，cargo 会自动下载并编译它们）──
+# 【default-features = false 是什么】很多库自带一堆可选功能（叫 features），全开会拖慢编译。
+# 这里大量关掉默认功能、只挑需要的，是「最小依赖」思想：编译快、二进制小、攻击面小。
+# 【版本号怎么读】"60.2.0" 表示「要 60.2.0 及以上、但低于 61 的版本」（caret 语义）；
+# "=0.1.11-alpha1" 的等号表示「锁死这个精确版本，一个补丁号都不许动」。
+# 实际装到哪一版由 Cargo.lock 文件钉死（本教学版同样复制了主工程的 Cargo.lock）。
+
+[dependencies]
+arrow-array = { version = "60.2.0", default-features = false } # Apache Arrow 的数组基础件：只用 array/RecordBatch（列式数据的「一列」与「一批行」容器），写 Parquet 用
+arrow-schema = { version = "60.2.0", default-features = false } # 只用 DataType/Field/Schema；不用 arrow 元crate（会白拉 string/ord/cast/regex 整支）
+chrono = { version = "0.4.45", default-features = false, features = ["std", "clock"] } # 只用 Local::now/format，裁掉 icu/wasmbind/oldtime
+ctp2rs = { version = "=0.1.11-alpha1", default-features = false, features = ["v1alpha1", "ctp_v6_7_7"] } # 实机so(同v1.4)只导出2-bool版CreateFtdcMdApi，union版需3-bool会dlsym失败
+ctrlc = "3.5.3"
+parquet = { version = "60.2.0", features = ["snap", "zstd"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+toml = "1.2.3"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+zstd = "0.14.5"

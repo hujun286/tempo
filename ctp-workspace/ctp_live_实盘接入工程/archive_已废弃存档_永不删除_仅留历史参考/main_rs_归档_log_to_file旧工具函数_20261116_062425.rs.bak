@@ -1,0 +1,12 @@
+// 归档：log_to_file 从 src/main.rs 移除。
+// 原因：无调用者，写死 logs/ctp_test.log，已被分文件日志替代。
+
+fn log_to_file(msg: &str) {
+    use std::io::Write;
+    let log_dir = std::path::Path::new("logs");
+    std::fs::create_dir_all(log_dir).ok();
+    let mut file = std::fs::OpenOptions::new()
+        .create(true).append(true).open("logs/ctp_test.log").unwrap();
+    let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs();
+    writeln!(file, "[{}] {}", now, msg).ok();
+}

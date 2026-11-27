@@ -1,0 +1,123 @@
+--- "ctp_src/ctp_live_\345\256\236\347\233\230\346\216\245\345\205\245\345\267\245\347\250\213/src/bin/\345\210\206\351\222\237k\347\272\277\350\220\275\347\233\230_v1_4.rs"	2026-11-24 09:15:03.000000000 +0000
++++ "eng/src/bin/\345\210\206\351\222\237k\347\272\277\350\220\275\347\233\230_v1_4.rs"	2026-11-25 10:37:24.514979226 +0000
+@@ -23,6 +23,7 @@
+ //!   1) run_aggregator / close_bucket：不再往 cache 攒整天，收盘即把 bar 发给落盘线程。
+ //!   2) run_writer：从"写整日 Parquet"改成"追加 JSON 行 + 定时 fsync"。
+ //!   3) main：加了一个子命令分发——第 1 个参数是"合并"就进合并模式，否则是采集模式。
++//!
+ //! 其余函数（load_contracts_csv / shard_contracts / MemberSpi / ApiHolder / spawn_member /
+ //! spawn_listener / fill_gaps 等）与 v1.1 逐字一致，动它们=引入风险，所以不碰。
+ //!
+@@ -89,10 +90,10 @@
+ ///   注意：不管设多少，每根 bar 都会"追加 + flush(到内核缓冲)"，只是 fsync(落物理盘)按这个间隔。
+ const 分片落盘秒: u64 = 60;
+ 
+-/// 落盘线程与聚合线程之间的在途 bar 队列容量。满了会【阻塞背压】，绝不静默丢 bar。
+-/// 全天满盘约 50 万根，100 万绰绰有余；峰值内存 = 100万 × ~200B ≈ 200MB 上限。
++// 落盘线程与聚合线程之间的在途 bar 队列容量。满了会【阻塞背压】，绝不静默丢 bar。
++// 全天满盘约 50 万根，100 万绰绰有余；峰值内存 = 100万 × ~200B ≈ 200MB 上限。
+ 
+-/// 分片文件 / 合并成品的相对目录（都挂在 工作区根/data_数据 下）。
++// 分片文件 / 合并成品的相对目录（都挂在 工作区根/data_数据 下）。
+ 
+ const MINUTE_MS: i64 = 60_000;
+ // ── ★v1.3/v1.4 新增：运行配置（规则20「配置集中管理」）─────────────────────
+@@ -136,12 +137,12 @@
+                 if 行.is_empty() || 行.starts_with('#') || 行.starts_with('[') {
+                     continue;
+                 }
+-                if let Some((k, v)) = 行.split_once('=') {
+-                    if k.trim() == 键名 {
+-                        let v = v.split('#').next().unwrap_or("").trim().trim_matches('"');
+-                        if !v.is_empty() {
+-                            return Some(v.to_string());
+-                        }
++                if let Some((k, v)) = 行.split_once('=')
++                    && k.trim() == 键名
++                {
++                    let v = v.split('#').next().unwrap_or("").trim().trim_matches('"');
++                    if !v.is_empty() {
++                        return Some(v.to_string());
+                     }
+                 }
+             }
+@@ -343,16 +344,16 @@
+         n_request_id: i32,
+         _b_is_last: bool,
+     ) {
+-        if let Some(e) = p_rsp_info {
+-            if e.ErrorID != 0 {
+-                tracing::error!(
+-                    "[MD#{}] RSP ERROR request_id={} ErrorID={} ErrorMsg={}",
+-                    self.member_idx,
+-                    n_request_id,
+-                    e.ErrorID,
+-                    e.ErrorMsg.to_string()
+-                );
+-            }
++        if let Some(e) = p_rsp_info
++            && e.ErrorID != 0
++        {
++            tracing::error!(
++                "[MD#{}] RSP ERROR request_id={} ErrorID={} ErrorMsg={}",
++                self.member_idx,
++                n_request_id,
++                e.ErrorID,
++                e.ErrorMsg.to_string()
++            );
+         }
+     }
+ }
+@@ -418,7 +419,7 @@
+ ) -> bool {
+     let mut login = CThostFtdcReqUserLoginField::default();
+     login.BrokerID.assign_from_str(broker_id);
+-    login.UserID.assign_from_str(&user_id);
++    login.UserID.assign_from_str(user_id);
+     login.Password.assign_from_str(password);
+     let ret = api.req_user_login(&mut login, 1);
+     tracing::info!("{} req_user_login ret={}", tag, ret);
+@@ -1051,8 +1052,8 @@
+     }
+     let mut gap = GapStats::default();
+     let mut 全部: Vec<MinuteBar> = Vec::with_capacity(by_inst.len() * 345);
+-    for (_inst, v) in by_inst.iter_mut() {
+-        v.sort_by(|a, b| a.bar_time_ms.cmp(&b.bar_time_ms));
++    for v in by_inst.values_mut() {
++        v.sort_by_key(|a| a.bar_time_ms);
+         // 算单分钟增量（只在一根根真实 bar 之间）
+         let mut prev_vol = 0u64;
+         let mut prev_to = 0.0f64;
+@@ -1072,7 +1073,7 @@
+         }
+         // 4) 补缺口（在算完增量后补；缺口 bar 增量=0，累计沿用前一根保持单调）
+         补齐缺口(v, &mut gap);
+-        全部.extend(v.drain(..));
++        全部.append(v);
+     }
+ 
+     // 全局排序：先合约后时间，和 v1.1 成品文件的排布一致，便于下游 diff 对照。
+@@ -1167,7 +1168,7 @@
+         Field::new("is_gap", DataType::Boolean, false),
+     ]));
+ 
+-    let 取 = |f: fn(&MinuteBar) -> i64| bars.iter().map(|b| f(b)).collect::<Vec<i64>>();
++    let 取 = |f: fn(&MinuteBar) -> i64| bars.iter().map(&f).collect::<Vec<i64>>();
+     let bt = 取(|b| b.bar_time_ms);
+     let inst: Vec<&str> = bars.iter().map(|b| b.instrument_id.as_str()).collect();
+     let td: Vec<&str> = bars.iter().map(|b| b.trading_day.as_str()).collect();
+@@ -1407,10 +1408,10 @@
+                 }
+                 ticks += m.ticks;
+                 disc += m.disconnects;
+-                if let Some(t) = m.last_tick_at {
+-                    if t.elapsed().as_secs() > 300 {
+-                        stale.push(i);
+-                    }
++                if let Some(t) = m.last_tick_at
++                    && t.elapsed().as_secs() > 300
++                {
++                    stale.push(i);
+                 }
+             }
+             tracing::info!(
