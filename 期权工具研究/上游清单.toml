@@ -1,0 +1,44 @@
+# 期权工具上游克隆台账（唯一权威清单）
+# 规则：克隆一律 --depth 1；我们的适配代码绝不写进克隆（升级零冲突）；
+# 追更新 = 季度性 git fetch + 对比本表 commit；更新后回填新 commit。
+# 2026-11-27 夜盘全量 cargo check 通过（见 download/期权工具安装与集成实测报告.md）
+
+[[repo]]
+name = "OptionStratLib"
+url = "https://github.com/joaquinbejar/OptionStratLib"
+commit = "0cf8223"
+date = "2026-11-18"
+用途 = "全功能期权库（链/Greeks/曲面/策略/SPAN保证金），锁 tag 0.24.x 引入"
+check结果 = "cargo check 通过（~6min，9 组件 crate）"
+
+[[repo]]
+name = "Option-Chain-OrderBook"
+url = "https://github.com/joaquinbejar/OptionChain-OrderBook"
+commit = "62c83b9"
+date = "2026-11-13"
+用途 = "本地仿真撮合（CTP 五档灌入即可）"
+check结果 = "cargo check 通过（~4min）"
+
+[[repo]]
+name = "options-pricing-engine-rs"
+url = "https://github.com/tfrmma/options-pricing-engine-rs"
+commit = "22a52e8"
+date = "2026-09-11"
+用途 = "低延迟定价（BSM/Black76/Heston/Bates/MC/Dupire/AD Greeks）；已作为 path 依赖实跑 MC"
+check结果 = "cargo check 通过 + Heston MC 演示运行通过"
+
+[[repo]]
+name = "options-market-making-engine-rs"
+url = "https://github.com/tfrmma/options-market-making-engine-rs"
+commit = "068c0f6"
+date = "2026-08-02"
+用途 = "做市大脑 5 crate（曲面→风控→报价→对冲→PnL归因），卖方报价研究底座"
+check结果 = "cargo check --workspace 通过"
+
+[[repo]]
+name = "barter-rs"
+url = "https://github.com/barter-rs/barter-rs"
+commit = "9770b27"
+date = "2026-08-20"
+用途 = "事件驱动骨架参考；InstrumentKind::Option(OptionContract) 字段齐全可映射中国合约"
+check结果 = "cargo check 通过；期权合约字段已确认存在"

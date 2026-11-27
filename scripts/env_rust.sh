@@ -10,3 +10,9 @@ export RUSTUP_DIST_SERVER=https://rsproxy.cn
 export RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup
 # libclang（ctp2rs build.rs 的 bindgen 需要；来源 zhipu2 容灾仓——20261127 沙盒回收 venv 丢失后从 Gitee 拉回，容灾首次实战生效）
 export LIBCLANG_PATH=/home/z/my-project/zhipu2_容灾仓/刚需二进制_CTP与编译
+# sccache 编译缓存（20261127 夜盘定案：不强制 cargo workspace 合并，两工程共享 sccache+registry 消除重复编译；
+# 二进制在 tools_工具箱/bin（git 跟踪，回收免重装），缓存目录用非隐藏路径）
+export RUSTC_WRAPPER=/home/z/my-project/tools_工具箱/bin/sccache
+export SCCACHE_DIR=/home/z/my-project/sccache_cache
+# GitHub 国内加速前缀（ghfast.top，20261127 夜盘实测可用；克隆时拼在原始 URL 前）
+export GH_FAST_PREFIX=https://ghfast.top/

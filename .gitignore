@@ -48,3 +48,14 @@ zhipu2_容灾仓/
 # 运行期临时
 tool-results/
 *.log.bak
+
+# ——20261127 夜盘新增：期权工具上游克隆与数据大件（克隆可按上游清单.toml 秒级重建）——
+期权工具研究/上游克隆/
+期权工具研究/接入测试/target/
+tmpo上游/
+advisory-db_fork/
+sccache_cache/
+rustup_home/
+cargo_home/
+flow/
+期权工具研究/ibx_fork/
