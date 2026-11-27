@@ -328,11 +328,14 @@ fn probe_one(ip: &str) -> Result1 {
                     r.flow_err = Some("存盘文件打开失败".into());
                 }
             }
-            Ok(Evt::SubRsp(info, code)) => match info {
-                None => r.sub_ok += 1,
-                Some(e) => {
+            Ok(Evt::SubRsp(info, code)) => {
+                // CTP 订阅确认 Some(ErrorID=0) 即成功（与更新器同口径）
+                let err_id = info.map_or(0, |e| e.ErrorID);
+                if err_id == 0 {
+                    r.sub_ok += 1;
+                } else {
                     r.sub_err += 1;
-                    if e.ErrorID != 0 {
+                    if let Some(e) = info {
                         r.flow_err = Some(format!(
                             "订阅 {code}: {} {}",
                             e.ErrorID,
@@ -340,7 +343,7 @@ fn probe_one(ip: &str) -> Result1 {
                         ));
                     }
                 }
-            },
+            }
             Ok(Evt::Err(_, msg)) => {
                 r.flow_err = Some(format!("订阅窗错误 {msg}"));
             }

@@ -11,6 +11,10 @@ path = "src/bin/md_probe_16ip.rs"
 name = "md_probe_期权"
 path = "src/bin/md_probe_期权.rs"
 
+[[bin]]
+name = "合约清单更新器"
+path = "src/bin/合约清单更新器.rs"
+
 [dependencies]
 ctp2rs = { version = "0.1.11-alpha1", default-features = false, features = ["v1alpha1", "ctp_v6_7_7"] }
 
