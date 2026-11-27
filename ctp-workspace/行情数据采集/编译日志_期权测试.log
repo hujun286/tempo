@@ -1,0 +1,231 @@
+    Updating `rsproxy-sparse` index
+ Downloading crates ...
+  Downloaded ahash v0.8.14 (registry `rsproxy-sparse`)
+  Downloaded tracing-log v0.2.0 (registry `rsproxy-sparse`)
+  Downloaded alloc-stdlib v0.3.0 (registry `rsproxy-sparse`)
+  Downloaded arrow-cmp v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded Inflector v0.11.4 (registry `rsproxy-sparse`)
+  Downloaded half v2.7.1 (registry `rsproxy-sparse`)
+  Downloaded arrow-data v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded tracing-attributes v0.1.31 (registry `rsproxy-sparse`)
+  Downloaded core_detect v1.0.0 (registry `rsproxy-sparse`)
+  Downloaded iana-time-zone v0.1.65 (registry `rsproxy-sparse`)
+  Downloaded autocfg v1.5.1 (registry `rsproxy-sparse`)
+  Downloaded arrow-ipc v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded toml v1.2.3+spec-1.1.0 (registry `rsproxy-sparse`)
+  Downloaded arrow-buffer v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded alloc-no-stdlib v3.0.0 (registry `rsproxy-sparse`)
+  Downloaded clang-sys v1.9.1 (registry `rsproxy-sparse`)
+  Downloaded flatbuffers v25.12.19 (registry `rsproxy-sparse`)
+  Downloaded brotli-decompressor v6.4.0 (registry `rsproxy-sparse`)
+  Downloaded toml_datetime v1.1.3+spec-1.1.0 (registry `rsproxy-sparse`)
+  Downloaded serde_spanned v1.1.3 (registry `rsproxy-sparse`)
+  Downloaded arrow-select v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded tracing-core v0.1.36 (registry `rsproxy-sparse`)
+  Downloaded zmij v1.0.23 (registry `rsproxy-sparse`)
+  Downloaded toml_writer v1.2.0+spec-1.1.0 (registry `rsproxy-sparse`)
+  Downloaded zerocopy-derive v0.8.66 (registry `rsproxy-sparse`)
+  Downloaded bitflags v2.13.2 (registry `rsproxy-sparse`)
+  Downloaded log v0.4.35 (registry `rsproxy-sparse`)
+  Downloaded chrono v0.4.45 (registry `rsproxy-sparse`)
+  Downloaded bytes v1.12.2 (registry `rsproxy-sparse`)
+  Downloaded twox-hash v2.1.5 (registry `rsproxy-sparse`)
+  Downloaded arrow-array v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded base64 v0.23.1 (registry `rsproxy-sparse`)
+  Downloaded simdutf8 v0.1.5 (registry `rsproxy-sparse`)
+  Downloaded semver v1.0.28 (registry `rsproxy-sparse`)
+  Downloaded brotli v9.1.3 (registry `rsproxy-sparse`)
+  Downloaded flate2 v1.1.11 (registry `rsproxy-sparse`)
+  Downloaded tracing v0.1.44 (registry `rsproxy-sparse`)
+  Downloaded prettyplease v0.2.37 (registry `rsproxy-sparse`)
+  Downloaded serde_json v1.0.154 (registry `rsproxy-sparse`)
+  Downloaded aho-corasick v1.1.5 (registry `rsproxy-sparse`)
+  Downloaded rustc_version v0.4.1 (registry `rsproxy-sparse`)
+  Downloaded unicode-ident v1.0.27 (registry `rsproxy-sparse`)
+  Downloaded tracing-subscriber v0.3.23 (registry `rsproxy-sparse`)
+  Downloaded zstd-sys v2.2.0+zstd.1.6.0 (registry `rsproxy-sparse`)
+  Downloaded libc v0.2.191 (registry `rsproxy-sparse`)
+  Downloaded tiny-keccak v2.0.2 (registry `rsproxy-sparse`)
+  Downloaded itertools v0.13.0 (registry `rsproxy-sparse`)
+  Downloaded cexpr v0.6.0 (registry `rsproxy-sparse`)
+  Downloaded scopeguard v1.2.0 (registry `rsproxy-sparse`)
+  Downloaded syn v3.0.10 (registry `rsproxy-sparse`)
+  Downloaded minimal-lexical v0.2.1 (registry `rsproxy-sparse`)
+  Downloaded shlex v2.0.1 (registry `rsproxy-sparse`)
+  Downloaded shlex v1.3.0 (registry `rsproxy-sparse`)
+  Downloaded zstd-safe v8.4.0 (registry `rsproxy-sparse`)
+  Downloaded hashbrown v0.17.2 (registry `rsproxy-sparse`)
+  Downloaded snap v1.1.2 (registry `rsproxy-sparse`)
+  Downloaded serde_derive v1.0.229 (registry `rsproxy-sparse`)
+  Downloaded pkg-config v0.3.34 (registry `rsproxy-sparse`)
+  Downloaded itoa v1.0.19 (registry `rsproxy-sparse`)
+  Downloaded either v1.19.0 (registry `rsproxy-sparse`)
+  Downloaded find-msvc-tools v0.1.15 (registry `rsproxy-sparse`)
+  Downloaded multiversion_no_op v1.0.0 (registry `rsproxy-sparse`)
+  Downloaded nom v7.1.3 (registry `rsproxy-sparse`)
+  Downloaded clang v2.1.0 (registry `rsproxy-sparse`)
+  Downloaded encoding_rs v0.8.44 (registry `rsproxy-sparse`)
+  Downloaded ctrlc v3.5.3 (registry `rsproxy-sparse`)
+  Downloaded proc-macro2 v1.0.107 (registry `rsproxy-sparse`)
+  Downloaded lazy_static v1.5.1 (registry `rsproxy-sparse`)
+  Downloaded const-random v0.1.20 (registry `rsproxy-sparse`)
+  Downloaded nix v0.32.0 (registry `rsproxy-sparse`)
+  Downloaded pin-project-lite v0.2.18 (registry `rsproxy-sparse`)
+  Downloaded cc v1.11.3 (registry `rsproxy-sparse`)
+  Downloaded memchr v2.8.3 (registry `rsproxy-sparse`)
+  Downloaded arrow-schema v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded libm v0.2.16 (registry `rsproxy-sparse`)
+  Downloaded zstd v0.14.5 (registry `rsproxy-sparse`)
+  Downloaded toml_parser v1.1.7+spec-1.1.0 (registry `rsproxy-sparse`)
+  Downloaded syn v2.0.119 (registry `rsproxy-sparse`)
+  Downloaded num-complex v0.4.6 (registry `rsproxy-sparse`)
+  Downloaded jobserver v0.1.35 (registry `rsproxy-sparse`)
+  Downloaded regex v1.13.2 (registry `rsproxy-sparse`)
+  Downloaded libloading v0.8.9 (registry `rsproxy-sparse`)
+  Downloaded roxmltree v0.21.2 (registry `rsproxy-sparse`)
+  Downloaded serde_core v1.0.229 (registry `rsproxy-sparse`)
+  Downloaded bindgen v0.72.1 (registry `rsproxy-sparse`)
+  Downloaded smallvec v1.16.6 (registry `rsproxy-sparse`)
+  Downloaded indexmap v2.14.2 (registry `rsproxy-sparse`)
+  Downloaded cfg_aliases v0.2.2 (registry `rsproxy-sparse`)
+  Downloaded crunchy v0.2.4 (registry `rsproxy-sparse`)
+  Downloaded regex-automata v0.4.19 (registry `rsproxy-sparse`)
+  Downloaded cfg-if v1.0.5 (registry `rsproxy-sparse`)
+  Downloaded once_cell v1.21.4 (registry `rsproxy-sparse`)
+  Downloaded lz4_flex v0.14.2 (registry `rsproxy-sparse`)
+  Downloaded const-random-macro v0.1.18 (registry `rsproxy-sparse`)
+  Downloaded rustversion v1.0.23 (registry `rsproxy-sparse`)
+  Downloaded version_check v0.9.5 (registry `rsproxy-sparse`)
+  Downloaded quote v1.0.47 (registry `rsproxy-sparse`)
+  Downloaded regex-syntax v0.8.12 (registry `rsproxy-sparse`)
+  Downloaded thread_local v1.1.10 (registry `rsproxy-sparse`)
+  Downloaded num-traits v0.2.19 (registry `rsproxy-sparse`)
+  Downloaded rustc-hash v2.1.3 (registry `rsproxy-sparse`)
+  Downloaded getrandom v0.4.3 (registry `rsproxy-sparse`)
+  Downloaded nu-ansi-term v0.50.3 (registry `rsproxy-sparse`)
+  Downloaded libloading v0.9.1 (registry `rsproxy-sparse`)
+  Downloaded winnow v1.0.5 (registry `rsproxy-sparse`)
+  Downloaded matchers v0.2.0 (registry `rsproxy-sparse`)
+  Downloaded parquet v60.2.0 (registry `rsproxy-sparse`)
+  Downloaded glob v0.3.4 (registry `rsproxy-sparse`)
+  Downloaded num-integer v0.1.47 (registry `rsproxy-sparse`)
+  Downloaded zerocopy v0.8.66 (registry `rsproxy-sparse`)
+  Downloaded sharded-slab v0.1.7 (registry `rsproxy-sparse`)
+  Downloaded equivalent v1.0.3 (registry `rsproxy-sparse`)
+  Downloaded seq-macro v0.3.6 (registry `rsproxy-sparse`)
+  Downloaded zlib-rs v0.6.9 (registry `rsproxy-sparse`)
+  Downloaded serde v1.0.229 (registry `rsproxy-sparse`)
+  Downloaded num-bigint v0.5.1 (registry `rsproxy-sparse`)
+  Downloaded ctp2rs v0.1.11-alpha1 (registry `rsproxy-sparse`)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling libc v0.2.191
+   Compiling cfg-if v1.0.5
+   Compiling syn v2.0.119
+   Compiling autocfg v1.5.1
+   Compiling libm v0.2.16
+   Compiling num-traits v0.2.19
+   Compiling zerocopy v0.8.66
+   Compiling memchr v2.8.3
+   Compiling zerocopy-derive v0.8.66
+   Compiling once_cell v1.21.4
+   Compiling glob v0.3.4
+   Compiling clang-sys v1.9.1
+   Compiling num-integer v0.1.47
+   Compiling jobserver v0.1.35
+   Compiling shlex v2.0.1
+   Compiling find-msvc-tools v0.1.15
+   Compiling getrandom v0.4.3
+   Compiling version_check v0.9.5
+   Compiling ahash v0.8.14
+   Compiling cc v1.11.3
+   Compiling num-bigint v0.5.1
+   Compiling half v2.7.1
+   Compiling aho-corasick v1.1.5
+   Compiling pkg-config v0.3.34
+   Compiling prettyplease v0.2.37
+   Compiling serde_core v1.0.229
+   Compiling regex-syntax v0.8.12
+   Compiling bytes v1.12.2
+   Compiling libloading v0.8.9
+   Compiling regex-automata v0.4.19
+   Compiling arrow-buffer v60.2.0
+   Compiling zstd-sys v2.2.0+zstd.1.6.0
+   Compiling semver v1.0.28
+   Compiling rustversion v1.0.23
+   Compiling iana-time-zone v0.1.65
+   Compiling minimal-lexical v0.2.1
+   Compiling arrow-schema v60.2.0
+   Compiling nom v7.1.3
+   Compiling arrow-data v60.2.0
+   Compiling chrono v0.4.45
+   Compiling rustc_version v0.4.1
+   Compiling regex v1.13.2
+   Compiling num-complex v0.4.6
+   Compiling bindgen v0.72.1
+   Compiling bitflags v2.13.2
+   Compiling hashbrown v0.17.2
+   Compiling either v1.19.0
+   Compiling itertools v0.13.0
+   Compiling arrow-array v60.2.0
+   Compiling flatbuffers v25.12.19
+   Compiling cexpr v0.6.0
+   Compiling shlex v1.3.0
+   Compiling cfg_aliases v0.2.2
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling lazy_static v1.5.1
+   Compiling zstd-safe v8.4.0
+   Compiling log v0.4.35
+   Compiling rustc-hash v2.1.3
+   Compiling Inflector v0.11.4
+   Compiling alloc-stdlib v0.3.0
+   Compiling nix v0.32.0
+   Compiling encoding_rs v0.8.44
+   Compiling arrow-cmp v60.2.0
+   Compiling clang v2.1.0
+   Compiling tracing-core v0.1.36
+   Compiling roxmltree v0.21.2
+   Compiling zmij v1.0.23
+   Compiling simdutf8 v0.1.5
+   Compiling snap v1.1.2
+   Compiling ctp2rs v0.1.11-alpha1
+   Compiling arrow-select v60.2.0
+   Compiling brotli-decompressor v6.4.0
+   Compiling tracing-attributes v0.1.31
+   Compiling syn v3.0.10
+   Compiling serde v1.0.229
+   Compiling zlib-rs v0.6.9
+   Compiling twox-hash v2.1.5
+   Compiling scopeguard v1.2.0
+   Compiling pin-project-lite v0.2.18
+   Compiling core_detect v1.0.0
+   Compiling winnow v1.0.5
+   Compiling serde_json v1.0.154
+   Compiling multiversion_no_op v1.0.0
+   Compiling tracing-log v0.2.0
+   Compiling sharded-slab v0.1.7
+   Compiling toml_parser v1.1.7+spec-1.1.0
+   Compiling tracing v0.1.44
+   Compiling lz4_flex v0.14.2
+   Compiling flate2 v1.1.11
+   Compiling serde_derive v1.0.229
+   Compiling brotli v9.1.3
+   Compiling arrow-ipc v60.2.0
+   Compiling zstd v0.14.5
+warning: ctp2rs@0.1.11-alpha1: include: -I./api/ctp/v6.7.7/v6.7.7_20240607_api_traderapi_se_linux64
+error: failed to run custom build command for `ctp2rs v0.1.11-alpha1`
+
+Caused by:
+  process didn't exit successfully: `/home/z/my-project/ctp-workspace/行情数据采集/target/release/build/ctp2rs/271c8f186fc18850/out/build_script_build` (exit status: 101)
+  --- stdout
+  cargo::warning=include: -I./api/ctp/v6.7.7/v6.7.7_20240607_api_traderapi_se_linux64
+  cargo:rerun-if-changed=src/wrapper.hpp
+  cargo:rerun-if-changed=build.rs
+
+  --- stderr
+
+  thread 'main' (6421) panicked at /home/z/my-project/.cargo/registry/src/rsproxy.cn-e3de039b2554c837/ctp2rs-0.1.11-alpha1/build.rs:205:23:
+  : "couldn't find any valid shared libraries matching: ['libclang.so', 'libclang-*.so', 'libclang.so.*', 'libclang-*.so.*'], set the `LIBCLANG_PATH` environment variable to a path where one of these files can be found (invalid: [])"
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: build failed, waiting for other jobs to finish...
